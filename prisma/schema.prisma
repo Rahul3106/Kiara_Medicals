@@ -1,0 +1,347 @@
+// Prisma schema for Kiara Medicals — Multi-Branch Medical Store Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  SUPER_ADMIN
+  BRANCH_MANAGER
+  STAFF
+}
+
+enum UnitType {
+  TABLET
+  STRIP
+  BOTTLE
+  BOX
+  VIAL
+  TUBE
+  SACHET
+  SYRUP
+  INJECTION
+}
+
+enum PaymentMode {
+  CASH
+  CARD
+  UPI
+  CREDIT
+  SPLIT
+}
+
+enum SaleStatus {
+  COMPLETED
+  REFUNDED
+  CANCELLED
+}
+
+enum PurchasePaymentStatus {
+  PAID
+  PARTIAL
+  PENDING
+}
+
+// ==========================================
+// 1. BRANCH & USER MANAGEMENT
+// ==========================================
+
+model Branch {
+  id            String    @id @default(uuid())
+  name          String    // e.g. Kiara Medicals - Branch 1
+  code          String    @unique // e.g. "BR-A", "BR-B"
+  address       String    @db.Text
+  city          String
+  state         String    @default("Maharashtra")
+  pincode       String
+  phone         String
+  email         String?
+  gstNumber     String    // 15-character GSTIN
+  drugLicenseNo String    // e.g. Form 20B / 21B numbers
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  users         User[]
+  batches       Batch[]
+  suppliers     Supplier[]
+  customers     Customer[]
+  purchases     Purchase[]
+  sales         Sale[]
+  auditLogs     AuditLog[]
+
+  @@index([code])
+}
+
+model User {
+  id           String    @id @default(uuid())
+  branchId     String?   // NULL for SUPER_ADMIN
+  name         String
+  email        String    @unique
+  phone        String?
+  passwordHash String
+  role         UserRole  @default(STAFF)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relationships
+  branch       Branch?    @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  purchases    Purchase[] @relation("PurchaseCreatedBy")
+  sales        Sale[]     @relation("BilledByUser")
+  auditLogs    AuditLog[]
+
+  @@index([branchId])
+  @@index([role])
+}
+
+// ==========================================
+// 2. MEDICINE MASTER & BATCH INVENTORY
+// ==========================================
+
+model Medicine {
+  id                   String         @id @default(uuid())
+  name                 String         // Brand name (e.g., Dolo 650)
+  genericName          String?        // Generic salt (e.g., Paracetamol)
+  composition          String?        // e.g. Paracetamol 650mg
+  manufacturer         String?        // e.g. Micro Labs
+  category             String?        // Analgesic, Antibiotic, etc.
+  hsnCode              String         @default("3004")
+  unit                 UnitType       @default(STRIP)
+  gstRate              Decimal        @default(12.0) @db.Decimal(5, 2)
+  minReorderLevel      Int            @default(10)
+  prescriptionRequired Boolean        @default(false)
+  isActive             Boolean        @default(true)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  // Relationships
+  batches              Batch[]
+  purchaseItems        PurchaseItem[]
+  saleItems            SaleItem[]
+
+  @@index([name])
+  @@index([genericName])
+  @@index([hsnCode])
+}
+
+model Batch {
+  id            String         @id @default(uuid())
+  medicineId    String
+  branchId      String
+  batchNumber   String
+  expiryDate    DateTime       @db.Date
+  mfgDate       DateTime?      @db.Date
+  purchasePrice Decimal        @db.Decimal(10, 2)
+  mrp           Decimal        @db.Decimal(10, 2)
+  sellingPrice  Decimal        @db.Decimal(10, 2)
+  quantity      Int            @default(0)
+  rackLocation  String?        // e.g., "A-12", "Cold-Storage-1"
+  isArchived    Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Relationships
+  medicine      Medicine       @relation(fields: [medicineId], references: [id], onDelete: Restrict)
+  branch        Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  purchaseItems PurchaseItem[]
+  saleItems     SaleItem[]
+
+  @@unique([branchId, medicineId, batchNumber])
+  @@index([branchId, expiryDate])
+  @@index([branchId, quantity])
+}
+
+// ==========================================
+// 3. SUPPLIER & PURCHASE MANAGEMENT
+// ==========================================
+
+model Supplier {
+  id            String     @id @default(uuid())
+  branchId      String?    // NULL if central supplier, otherwise branch-specific
+  name          String
+  agencyName    String?
+  contactPerson String?
+  phone         String
+  email         String?
+  address       String?    @db.Text
+  gstNumber     String?
+  drugLicenseNo String?
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // Relationships
+  branch        Branch?    @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  purchases     Purchase[]
+
+  @@index([branchId])
+  @@index([name])
+}
+
+model Purchase {
+  id             String                @id @default(uuid())
+  branchId       String
+  supplierId     String
+  createdById    String
+  invoiceNumber  String                // Supplier's Bill Number
+  purchaseDate   DateTime              @db.Date
+  subTotal       Decimal               @db.Decimal(12, 2)
+  taxAmount      Decimal               @db.Decimal(12, 2)
+  discountAmount Decimal               @default(0.0) @db.Decimal(12, 2)
+  netAmount      Decimal               @db.Decimal(12, 2)
+  paymentStatus  PurchasePaymentStatus @default(PENDING)
+  invoiceScanUrl String?               @db.Text
+  notes          String?               @db.Text
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  // Relationships
+  branch         Branch                @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  supplier       Supplier              @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  createdBy      User                  @relation("PurchaseCreatedBy", fields: [createdById], references: [id])
+  items          PurchaseItem[]
+
+  @@unique([branchId, supplierId, invoiceNumber])
+  @@index([branchId, purchaseDate])
+}
+
+model PurchaseItem {
+  id            String   @id @default(uuid())
+  purchaseId    String
+  medicineId    String
+  batchId       String
+  batchNumber   String
+  expiryDate    DateTime @db.Date
+  quantity      Int
+  freeQuantity  Int      @default(0)
+  purchasePrice Decimal  @db.Decimal(10, 2)
+  mrp           Decimal  @db.Decimal(10, 2)
+  taxRate       Decimal  @db.Decimal(5, 2)
+  taxAmount     Decimal  @db.Decimal(10, 2)
+  totalAmount   Decimal  @db.Decimal(12, 2)
+
+  // Relationships
+  purchase      Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  medicine      Medicine @relation(fields: [medicineId], references: [id], onDelete: Restrict)
+  batch         Batch    @relation(fields: [batchId], references: [id], onDelete: Restrict)
+
+  @@index([purchaseId])
+}
+
+// ==========================================
+// 4. CUSTOMER, SALES & GST INVOICING
+// ==========================================
+
+model Customer {
+  id           String   @id @default(uuid())
+  branchId     String
+  name         String
+  phone        String
+  email        String?
+  address      String?  @db.Text
+  doctorName   String?
+  doctorRegNo  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relationships
+  branch       Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  sales        Sale[]
+
+  @@index([branchId, phone])
+}
+
+model Sale {
+  id              String      @id @default(uuid())
+  branchId        String
+  customerId      String?
+  billedById      String
+  billNumber      String      // Formatted: KM-BR1-2627-00001
+  saleDate        DateTime    @default(now())
+  subTotal        Decimal     @db.Decimal(12, 2)
+  cgstAmount      Decimal     @default(0.0) @db.Decimal(10, 2)
+  sgstAmount      Decimal     @default(0.0) @db.Decimal(10, 2)
+  igstAmount      Decimal     @default(0.0) @db.Decimal(10, 2)
+  totalTaxAmount  Decimal     @db.Decimal(10, 2)
+  discountAmount  Decimal     @default(0.0) @db.Decimal(10, 2)
+  roundOff        Decimal     @default(0.0) @db.Decimal(6, 2)
+  grandTotal      Decimal     @db.Decimal(12, 2)
+  paymentMode     PaymentMode @default(CASH)
+  status          SaleStatus  @default(COMPLETED)
+  prescriptionUrl String?     @db.Text
+  notes           String?     @db.Text
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relationships
+  branch          Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  customer        Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  billedBy        User        @relation("BilledByUser", fields: [billedById], references: [id])
+  items           SaleItem[]
+
+  @@unique([branchId, billNumber])
+  @@index([branchId, saleDate])
+  @@index([branchId, status])
+}
+
+model SaleItem {
+  id              String   @id @default(uuid())
+  saleId          String
+  medicineId      String
+  batchId         String
+  batchNumber     String
+  expiryDate      DateTime @db.Date
+  quantity        Int
+  unitPrice       Decimal  @db.Decimal(10, 2)
+  mrp             Decimal  @db.Decimal(10, 2)
+  discountPercent Decimal  @default(0.0) @db.Decimal(5, 2)
+  discountAmount  Decimal  @default(0.0) @db.Decimal(10, 2)
+  taxRate         Decimal  @db.Decimal(5, 2)
+  cgstAmount      Decimal  @default(0.0) @db.Decimal(10, 2)
+  sgstAmount      Decimal  @default(0.0) @db.Decimal(10, 2)
+  igstAmount      Decimal  @default(0.0) @db.Decimal(10, 2)
+  netAmount       Decimal  @db.Decimal(12, 2)
+
+  // Relationships
+  sale            Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  medicine        Medicine @relation(fields: [medicineId], references: [id], onDelete: Restrict)
+  batch           Batch    @relation(fields: [batchId], references: [id], onDelete: Restrict)
+
+  @@index([saleId])
+}
+
+// ==========================================
+// 5. AUDIT LOGGING & COMPLIANCE
+// ==========================================
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  branchId   String?
+  userId     String?
+  action     String   // e.g. "STOCK_OVERRIDE", "INVOICE_CANCELLED", "PRICE_UPDATE"
+  entityType String   // e.g. "Batch", "Sale", "User"
+  entityId   String
+  oldValues  Json?
+  newValues  Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  // Relationships
+  branch     Branch?  @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([branchId, createdAt])
+  @@index([action])
+}
