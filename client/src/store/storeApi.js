@@ -2,13 +2,10 @@ import axios from 'axios';
 
 const storeApi = axios.create({
   baseURL: '/api/store',
+  withCredentials: true, // Automatically sends and receives HttpOnly cookies
 });
 
 storeApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('km_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
   const branch = localStorage.getItem('km_branch');
   if (branch) {
     try {

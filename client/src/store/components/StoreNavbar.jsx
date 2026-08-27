@@ -1,77 +1,181 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../../shared/context/AuthContext';
-import BranchBadge from '../../shared/components/BranchBadge';
+import {
+  LayoutDashboard,
+  Receipt,
+  FileText,
+  Package,
+  ArrowDownToLine,
+  BarChart3,
+  Users,
+  Building2,
+  LogOut,
+  Menu,
+  X,
+} from 'lucide-react';
+
+const storeNavItems = [
+  { name: 'Dashboard', path: '/store/dashboard', icon: LayoutDashboard, exact: true },
+  { name: 'POS Bill', path: '/store/sales/new', icon: Receipt },
+  { name: 'Invoices', path: '/store/sales', icon: FileText, exact: true },
+  { name: 'Inventory', path: '/store/inventory', icon: Package },
+  { name: 'Inward', path: '/store/purchases/new', icon: ArrowDownToLine },
+  { name: 'Reports', path: '/store/reports', icon: BarChart3 },
+  { name: 'Patients', path: '/store/customers', icon: Users },
+  { name: 'Suppliers', path: '/store/suppliers', icon: Building2 },
+];
 
 export const StoreNavbar = () => {
   const { user, activeBranch, logout } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const branch = activeBranch || user?.branch;
 
   const navLinkClass = ({ isActive }) =>
-    `px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+    `px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 whitespace-nowrap flex-shrink-0 ${
       isActive
-        ? 'bg-emerald-600 text-white shadow-sm'
-        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+        ? 'bg-teal-50 text-teal-900 border border-teal-200/80 shadow-2xs font-bold'
+        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent'
     }`;
 
+  const initial = (user?.name || 'S').charAt(0).toUpperCase();
+
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-16 flex items-center justify-between">
-          {/* Brand & Branch */}
-          <div className="flex items-center gap-4">
-            <div className="w-9 h-9 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white shadow-md shadow-emerald-500/20">
-              KM
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-slate-900 text-sm">{branch?.name || 'Kiara Medicals'}</span>
-                <BranchBadge branch={branch} />
-              </div>
-              <span className="text-[11px] text-slate-500 font-mono">
-                GSTIN: {branch?.gstNumber || 'N/A'}
-              </span>
-            </div>
-          </div>
+    <>
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-14 flex items-center justify-between gap-2">
+            {/* Left: Brand + Active Branch Context */}
+            <div className="flex items-center gap-2.5 flex-shrink-0">
+              <button
+                type="button"
+                className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={18} />
+              </button>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1.5">
-            <NavLink to="/store/dashboard" className={navLinkClass}>
-              📊 Dashboard
-            </NavLink>
-            <NavLink to="/store/inventory" className={navLinkClass}>
-              📦 Inventory & Stock
-            </NavLink>
-            <NavLink to="/store/purchases/new" className={navLinkClass}>
-              ➕ New Purchase Entry
-            </NavLink>
-            <NavLink to="/store/purchases" end className={navLinkClass}>
-              📑 Purchase Invoices
-            </NavLink>
-            <NavLink to="/store/suppliers" className={navLinkClass}>
-              🏢 Suppliers
-            </NavLink>
-          </nav>
-
-          {/* User Profile & Logout */}
-          <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <div className="text-xs font-semibold text-slate-800">{user?.name}</div>
-              <div className="text-[10px] text-emerald-600 font-medium">
-                {user?.role === 'BRANCH_MANAGER' ? 'Branch Manager' : 'Cashier / Staff'}
-              </div>
+              <Link to="/store/dashboard" className="flex items-center gap-2 group flex-shrink-0">
+                <div className="w-7 h-7 bg-teal-700 rounded-md flex items-center justify-center font-bold text-white text-xs tracking-tight shadow-2xs group-hover:bg-teal-800 transition">
+                  KM
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-slate-900 text-sm tracking-tight font-display whitespace-nowrap">
+                    Kiara Medicals
+                  </span>
+                  <span className="font-mono text-[10px] font-bold bg-slate-100 text-slate-800 px-1 py-0.2 rounded border border-slate-200">
+                    {branch?.code || 'STORE'}
+                  </span>
+                </div>
+              </Link>
             </div>
-            <div className="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
-            <button
-              onClick={logout}
-              className="px-2.5 py-1 bg-slate-100 hover:bg-red-50 hover:text-red-600 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 transition"
-            >
-              Sign out
-            </button>
+
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-1 overflow-x-auto py-1">
+              {storeNavItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.exact}
+                  className={navLinkClass}
+                >
+                  <item.icon size={14} className="flex-shrink-0" />
+                  <span>{item.name}</span>
+                </NavLink>
+              ))}
+            </nav>
+
+            {/* Right: Staff Info & Logout (Single-line row, no wrapping) */}
+            <div className="flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
+              <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200 flex-shrink-0">
+                <div className="w-7 h-7 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center font-mono font-bold text-xs text-slate-700 flex-shrink-0">
+                  {initial}
+                </div>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-xs font-semibold text-slate-900 truncate max-w-[120px]">
+                    {user?.name || 'Staff User'}
+                  </span>
+                  <span className="text-[10px] text-teal-800 font-medium mt-0.5">
+                    {user?.role === 'BRANCH_MANAGER' ? 'Manager' : 'Staff'}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={logout}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition flex-shrink-0 whitespace-nowrap"
+                title="Sign out of counter"
+              >
+                <LogOut size={13} />
+                <span className="hidden sm:inline">Sign out</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-4 shadow-xl flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center font-bold text-white text-xs">
+                    KM
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">Kiara Medicals</div>
+                    <div className="text-[10px] text-slate-500 font-mono">{branch?.code}</div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <nav className="space-y-1">
+                {storeNavItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    end={item.exact}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={navLinkClass}
+                  >
+                    <item.icon size={16} />
+                    <span>{item.name}</span>
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
+
+            <div className="border-t border-slate-100 pt-3">
+              <div className="text-xs font-semibold text-slate-900 mb-0.5">{user?.name}</div>
+              <div className="text-[10px] text-slate-500 mb-3">{user?.role}</div>
+              <button
+                onClick={() => {
+                  logout();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs font-semibold"
+              >
+                <LogOut size={14} />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

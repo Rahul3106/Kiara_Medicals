@@ -2,14 +2,7 @@ import axios from 'axios';
 
 const adminApi = axios.create({
   baseURL: '/api/admin',
-});
-
-adminApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('km_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true, // Automatically sends and receives HttpOnly cookies
 });
 
 export default adminApi;

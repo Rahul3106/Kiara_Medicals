@@ -89,3 +89,44 @@ export const createUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, phone, role, branchId, isActive, password } = req.body;
+
+    const data = {};
+    if (name) data.name = name;
+    if (phone !== undefined) data.phone = phone;
+    if (role) {
+      data.role = role;
+      if (role === 'SUPER_ADMIN') data.branchId = null;
+    }
+    if (branchId !== undefined && role !== 'SUPER_ADMIN') data.branchId = branchId;
+    if (isActive !== undefined) data.isActive = isActive;
+    if (password) data.passwordHash = await hashPassword(password);
+
+    const user = await prisma.user.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        role: true,
+        branchId: true,
+        isActive: true,
+        updatedAt: true,
+      },
+    });
+
+    res.json({
+      success: true,
+      data: user,
+      message: 'User details updated',
+    });
+  } catch (error) {
+    next(error);
+  }
+};

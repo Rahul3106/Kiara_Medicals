@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AuthContext = createContext(null);
 
@@ -7,30 +8,61 @@ export const AuthProvider = ({ children }) => {
     const saved = localStorage.getItem('km_user');
     return saved ? JSON.parse(saved) : null;
   });
-  const [token, setToken] = useState(() => localStorage.getItem('km_token') || null);
   const [activeBranch, setActiveBranch] = useState(() => {
     const saved = localStorage.getItem('km_branch');
     return saved ? JSON.parse(saved) : null;
   });
+  const [loading, setLoading] = useState(true);
 
-  const login = (userData, authToken, branchData = null) => {
+  // Verify and hydrate session from HttpOnly Cookie on mount
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const res = await axios.get('/api/auth/me', { withCredentials: true });
+        if (res.data?.success && res.data.data?.user) {
+          const userData = res.data.data.user;
+          setUser(userData);
+          localStorage.setItem('km_user', JSON.stringify(userData));
+          if (!activeBranch && userData.branch) {
+            setActiveBranch(userData.branch);
+            localStorage.setItem('km_branch', JSON.stringify(userData.branch));
+          }
+        }
+      } catch (err) {
+        // Not authenticated or cookie expired - clean up user state
+        setUser(null);
+        localStorage.removeItem('km_user');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  const login = (userData, branchData = null) => {
     setUser(userData);
-    setToken(authToken);
-    setActiveBranch(branchData || userData.branch);
+    const branch = branchData || userData.branch;
+    setActiveBranch(branch);
     localStorage.setItem('km_user', JSON.stringify(userData));
-    localStorage.setItem('km_token', authToken);
-    if (branchData || userData.branch) {
-      localStorage.setItem('km_branch', JSON.stringify(branchData || userData.branch));
+    if (branch) {
+      localStorage.setItem('km_branch', JSON.stringify(branch));
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    setActiveBranch(null);
-    localStorage.removeItem('km_user');
-    localStorage.removeItem('km_token');
-    localStorage.removeItem('km_branch');
+  const logout = async () => {
+    try {
+      await axios.post('/api/auth/logout', {}, { withCredentials: true });
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      setUser(null);
+      setActiveBranch(null);
+      localStorage.removeItem('km_user');
+      localStorage.removeItem('km_branch');
+      // Also clean up any legacy token if present
+      localStorage.removeItem('km_token');
+    }
   };
 
   const switchBranch = (branch) => {
@@ -44,10 +76,10 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        token,
         activeBranch,
-        isAuthenticated: !!token,
+        isAuthenticated: !!user,
         isAdmin: user?.role === 'SUPER_ADMIN',
+        loading,
         login,
         logout,
         switchBranch,

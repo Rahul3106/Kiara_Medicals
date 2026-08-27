@@ -183,11 +183,11 @@ export const createPurchaseEntry = async (branchId, userId, payload) => {
         action: 'PURCHASE_STOCK_INWARD',
         entityType: 'Purchase',
         entityId: purchase.id,
-        newValues: {
+        newValues: JSON.stringify({
           invoiceNumber: purchase.invoiceNumber,
           netAmount: purchase.netAmount,
           itemCount: processedItems.length,
-        },
+        }),
       },
     });
 

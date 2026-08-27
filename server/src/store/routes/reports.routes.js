@@ -1,21 +1,11 @@
 import { Router } from 'express';
+import * as reportsController from '../controllers/reports.controller.js';
 
 const router = Router();
 
-router.get('/daily', (req, res) => {
-  res.json({ success: true, branchId: req.branchId, message: 'Branch daily sales summary' });
-});
-
-router.get('/weekly', (req, res) => {
-  res.json({ success: true, branchId: req.branchId, message: 'Branch weekly sales trends' });
-});
-
-router.get('/monthly', (req, res) => {
-  res.json({ success: true, branchId: req.branchId, message: 'Branch monthly GST report' });
-});
-
-router.get('/fast-moving', (req, res) => {
-  res.json({ success: true, branchId: req.branchId, message: 'Branch top selling medicines' });
-});
+router.get('/overview', reportsController.getReportsOverview);
+router.get('/gst-summary', reportsController.getGstSummary);
+router.get('/stock-movement', reportsController.getStockMovement);
+router.get('/', reportsController.getReportsOverview);
 
 export default router;

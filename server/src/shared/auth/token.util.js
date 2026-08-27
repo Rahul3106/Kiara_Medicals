@@ -31,3 +31,52 @@ export const generateRefreshToken = (payload) => {
 export const verifyRefreshToken = (token) => {
   return jwt.verify(token, ENV.JWT_REFRESH_SECRET);
 };
+
+/**
+ * Sets HttpOnly, Secure, SameSite=Strict Authentication Cookies
+ * @param {import('express').Response} res
+ * @param {string} accessToken
+ * @param {string} refreshToken
+ */
+export const setAuthCookies = (res, accessToken, refreshToken) => {
+  const isProd = ENV.IS_PRODUCTION;
+  
+  // Access Token Cookie (1 day)
+  res.cookie('accessToken', accessToken, {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'strict' : 'lax',
+    maxAge: 24 * 60 * 60 * 1000,
+    domain: ENV.COOKIE_DOMAIN || undefined,
+    path: '/',
+  });
+
+  // Refresh Token Cookie (7 days)
+  if (refreshToken) {
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? 'strict' : 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      domain: ENV.COOKIE_DOMAIN || undefined,
+      path: '/',
+    });
+  }
+};
+
+/**
+ * Clears Authentication Cookies on Logout
+ * @param {import('express').Response} res
+ */
+export const clearAuthCookies = (res) => {
+  const isProd = ENV.IS_PRODUCTION;
+  const opts = {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'strict' : 'lax',
+    domain: ENV.COOKIE_DOMAIN || undefined,
+    path: '/',
+  };
+  res.clearCookie('accessToken', opts);
+  res.clearCookie('refreshToken', opts);
+};

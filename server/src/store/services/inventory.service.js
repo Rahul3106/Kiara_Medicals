@@ -75,6 +75,7 @@ export const getBranchInventory = async (branchId, options = {}) => {
 
   return {
     items: enrichedItems,
+    batches: enrichedItems,
     total,
     page: parseInt(page),
     totalPages: Math.ceil(total / parseInt(limit)),
@@ -141,8 +142,8 @@ export const adjustStock = async (branchId, userId, data) => {
         action: `STOCK_ADJUSTMENT_${adjustmentType}`,
         entityType: 'Batch',
         entityId: batch.id,
-        oldValues: { quantity: previousQuantity, batchNumber: batch.batchNumber, medicine: batch.medicine.name },
-        newValues: { quantity: newQuantity, reason: reason || 'Manual adjustment' },
+        oldValues: JSON.stringify({ quantity: previousQuantity, batchNumber: batch.batchNumber, medicine: batch.medicine.name }),
+        newValues: JSON.stringify({ quantity: newQuantity, reason: reason || 'Manual adjustment' }),
       },
     });
 

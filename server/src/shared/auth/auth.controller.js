@@ -1,6 +1,12 @@
 import { prisma } from '../config/db.js';
 import { comparePassword } from './password.util.js';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from './token.util.js';
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+  setAuthCookies,
+  clearAuthCookies,
+} from './token.util.js';
 import { AppError } from '../errors/AppError.js';
 
 /**
@@ -47,6 +53,9 @@ export const login = async (req, res, next) => {
 
     const accessToken = generateAccessToken(tokenPayload);
     const refreshToken = generateRefreshToken({ userId: user.id });
+
+    // Set HttpOnly, Secure, SameSite=Strict Cookies
+    setAuthCookies(res, accessToken, refreshToken);
 
     res.status(200).json({
       success: true,
@@ -112,6 +121,9 @@ export const adminLogin = async (req, res, next) => {
       branchId: null,
     });
     const refreshToken = generateRefreshToken({ userId: user.id });
+
+    // Set HttpOnly, Secure, SameSite=Strict Cookies
+    setAuthCookies(res, accessToken, refreshToken);
 
     res.status(200).json({
       success: true,
@@ -190,6 +202,9 @@ export const storeLogin = async (req, res, next) => {
     });
     const refreshToken = generateRefreshToken({ userId: user.id });
 
+    // Set HttpOnly, Secure, SameSite=Strict Cookies
+    setAuthCookies(res, accessToken, refreshToken);
+
     res.status(200).json({
       success: true,
       message: `Logged in to ${user.branch.name}`,
@@ -216,7 +231,7 @@ export const storeLogin = async (req, res, next) => {
  */
 export const refreshToken = async (req, res, next) => {
   try {
-    const { refreshToken: token } = req.body;
+    const token = req.cookies?.refreshToken || req.body?.refreshToken;
 
     if (!token) {
       return next(new AppError('Refresh token is required', 400, 'MISSING_REFRESH_TOKEN'));
@@ -238,6 +253,9 @@ export const refreshToken = async (req, res, next) => {
       role: user.role,
       branchId: user.branchId,
     });
+
+    // Refresh HttpOnly access token cookie
+    setAuthCookies(res, newAccessToken);
 
     res.status(200).json({
       success: true,
@@ -280,9 +298,10 @@ export const getCurrentUser = async (req, res, next) => {
 };
 
 /**
- * Logout Handler
+ * Logout Handler: Clears HttpOnly Cookies
  */
 export const logout = async (req, res) => {
+  clearAuthCookies(res);
   res.status(200).json({
     success: true,
     message: 'Logged out successfully',

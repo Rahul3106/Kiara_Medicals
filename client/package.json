@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sentry/react": "^10.71.0",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "lucide-react": "^0.417.0",

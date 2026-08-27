@@ -5,12 +5,21 @@ import { AppError } from '../errors/AppError.js';
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    let token = null;
+
+    // 1. Priority: Extract from secure HttpOnly cookie
+    if (req.cookies && req.cookies.accessToken) {
+      token = req.cookies.accessToken;
+    }
+    // 2. Fallback: Extract from Authorization header (Bearer token)
+    else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
       return next(new AppError('No authorization token provided', 401, 'UNAUTHORIZED'));
     }
 
-    const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, ENV.JWT_SECRET);
 
     const user = await prisma.user.findUnique({

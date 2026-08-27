@@ -68,3 +68,34 @@ export const createBranch = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateBranch = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, address, city, state, pincode, phone, email, gstNumber, drugLicenseNo, isActive } = req.body;
+
+    const branch = await prisma.branch.update({
+      where: { id },
+      data: {
+        ...(name && { name }),
+        ...(address !== undefined && { address }),
+        ...(city && { city }),
+        ...(state && { state }),
+        ...(pincode && { pincode }),
+        ...(phone && { phone }),
+        ...(email !== undefined && { email }),
+        ...(gstNumber && { gstNumber: gstNumber.toUpperCase().trim() }),
+        ...(drugLicenseNo && { drugLicenseNo }),
+        ...(isActive !== undefined && { isActive }),
+      },
+    });
+
+    res.json({
+      success: true,
+      data: branch,
+      message: 'Branch details updated',
+    });
+  } catch (error) {
+    next(error);
+  }
+};

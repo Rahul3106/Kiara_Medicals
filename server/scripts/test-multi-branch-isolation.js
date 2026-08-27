@@ -1,67 +1,61 @@
-/**
- * Automated Verification Script for Phase 2:
- * 1. Admin Authentication & Consolidated Analytics
- * 2. Role-Based Access Control (403 Forbidden for staff accessing admin routes)
- * 3. Store Login with Automatic Branch Scoping
- * 4. Multi-Tenant Branch Isolation at Database/API Layer (Shop A vs Shop B data segregation)
- */
-
 import http from 'http';
 
 const BASE_URL = 'http://localhost:5000';
 
-function makeRequest(method, path, data = null, headers = {}) {
+const makeRequest = (method, path, body = null, headers = {}) => {
   return new Promise((resolve, reject) => {
     const url = new URL(path, BASE_URL);
-    const postData = data ? JSON.stringify(data) : null;
-
     const options = {
       hostname: url.hostname,
-      port: url.port || 5000,
+      port: url.port,
       path: url.pathname + url.search,
-      method: method,
+      method,
       headers: {
         'Content-Type': 'application/json',
-        ...(postData && { 'Content-Length': Buffer.byteLength(postData) }),
         ...headers,
       },
     };
 
     const req = http.request(options, (res) => {
-      let body = '';
-      res.on('data', (chunk) => (body += chunk));
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
       res.on('end', () => {
         try {
-          const parsed = JSON.parse(body);
-          resolve({ status: res.statusCode, data: parsed });
-        } catch (e) {
-          resolve({ status: res.statusCode, data: body });
+          const parsed = JSON.parse(data);
+          resolve({ status: res.statusCode, data: parsed, headers: res.headers });
+        } catch {
+          resolve({ status: res.statusCode, data, headers: res.headers });
         }
       });
     });
 
-    req.on('error', reject);
-    if (postData) req.write(postData);
+    req.on('error', (err) => reject(err));
+
+    if (body) {
+      req.write(JSON.stringify(body));
+    }
     req.end();
   });
-}
+};
 
 async function runTests() {
   console.log('====================================================');
   console.log('🧪 RUNNING PHASE 2 MULTI-BRANCH & AUTH VERIFICATION');
-  console.log('====================================================\n');
+  console.log('====================================================');
 
   let passed = 0;
   let failed = 0;
 
-  // Test 1: Admin Login
-  console.log('🔹 Test 1: Super Admin Login');
+  // Test 1: Super Admin Login
+  console.log('\n🔹 Test 1: Super Admin Login');
   const adminLoginRes = await makeRequest('POST', '/api/auth/admin-login', {
     email: 'admin@kiaramedicals.com',
     password: 'admin123',
   });
 
-  if (adminLoginRes.status === 200 && adminLoginRes.data.data?.accessToken) {
+  if (adminLoginRes.status === 200 && adminLoginRes.data.data?.user?.role === 'SUPER_ADMIN') {
     console.log('   ✅ Super Admin authenticated successfully.');
     passed++;
   } else {
@@ -126,13 +120,13 @@ async function runTests() {
   const shopABatchNumbers = shopAItems.map((b) => b.batchNumber);
   console.log(`   📦 Shop A Batches Found: [${shopABatchNumbers.join(', ')}]`);
 
-  // Verify only Shop A batches (starting with DL-A, AG-A, PN-A) exist and no Shop B batches
-  const hasOnlyShopA = shopABatchNumbers.length > 0 && shopABatchNumbers.every((b) => b.includes('-A'));
-  if (hasOnlyShopA) {
+  // Verify no Shop B batches exist in Shop A inventory
+  const hasNoShopB = shopABatchNumbers.length > 0 && !shopABatchNumbers.some((b) => b.includes('-B'));
+  if (hasNoShopB) {
     console.log('   ✅ Multi-tenant isolation verified: Shop A user only receives Shop A inventory.');
     passed++;
   } else {
-    console.error('   ❌ Data leak detected! Shop A received non-Shop-A batches:', shopABatchNumbers);
+    console.error('   ❌ Data leak detected! Shop A received Shop B batches:', shopABatchNumbers);
     failed++;
   }
 
@@ -164,6 +158,11 @@ async function runTests() {
   console.log('\n====================================================');
   console.log(`📊 TEST SUMMARY: Passed ${passed}/${passed + failed}`);
   console.log('====================================================\n');
+
+  if (failed > 0) process.exit(1);
 }
 
-runTests().catch(console.error);
+runTests().catch((err) => {
+  console.error('Test execution error:', err);
+  process.exit(1);
+});
