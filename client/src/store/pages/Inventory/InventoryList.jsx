@@ -270,7 +270,33 @@ export const InventoryList = () => {
                         </span>{' '}
                         <span className="text-[10px] text-slate-400">{batch.medicine?.unit}</span>
                       </td>
-                      <td className="px-4 py-3 text-center">
+                      <td className="px-4 py-3 text-center flex items-center justify-center gap-2">
+                        <button
+                          onClick={async () => {
+                            try {
+                              const res = await storeApi.post('/../labels/medicine', {
+                                medicineName: batch.medicine?.name,
+                                batchNumber: batch.batchNumber,
+                                expiryDate: new Date(batch.expiryDate).toLocaleDateString('en-IN', { month: '2-digit', year: 'numeric' }),
+                                mrp: batch.mrp,
+                                rackLocation: batch.rackLocation,
+                                labelType: 'shelf'
+                              }, { responseType: 'blob' });
+                              
+                              const blob = new Blob([res.data], { type: 'image/png' });
+                              const url = URL.createObjectURL(blob);
+                              window.open(url, '_blank');
+                            } catch (err) {
+                              console.error(err);
+                              alert('Failed to generate label');
+                            }
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-300 transition shadow-2xs"
+                          title="Print Shelf Label"
+                        >
+                          <Package size={11} />
+                          <span>Label</span>
+                        </button>
                         <button
                           onClick={() => setSelectedBatchForAdjust(batch)}
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-300 transition shadow-2xs"

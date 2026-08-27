@@ -299,6 +299,28 @@ export const BillHistory = () => {
                       <td className="py-2.5 px-4 text-center">
                         <div className="flex items-center justify-center gap-1.5">
                           <button
+                            onClick={async () => {
+                              try {
+                                const res = await storeApi.get(`/sales/${sale.id}/thermal-receipt?width=80`, { responseType: 'blob' });
+                                const blob = new Blob([res.data], { type: 'application/octet-stream' });
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `receipt_${sale.billNumber}.bin`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                              } catch (err) {
+                                alert('Failed to generate thermal receipt');
+                              }
+                            }}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-xs font-semibold text-teal-800 transition shadow-2xs"
+                            title="Download Thermal Receipt (ESC/POS)"
+                          >
+                            <Receipt size={12} />
+                            <span>Receipt</span>
+                          </button>
+                          <button
                             onClick={() => handleViewInvoice(sale.id)}
                             className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-xs font-semibold text-slate-700 transition shadow-2xs"
                             title="View / Print Tax Invoice"

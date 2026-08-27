@@ -13,6 +13,8 @@ import authRoutes from './shared/auth/auth.routes.js';
 import adminRoutes from './admin/routes/admin.routes.js';
 import storeRoutes from './store/routes/index.js';
 import uploadRoutes from './shared/routes/upload.routes.js';
+import ocrRoutes from './shared/routes/ocr.routes.js';
+import labelRoutes from './shared/routes/label.routes.js';
 
 const app = express();
 
@@ -62,17 +64,12 @@ app.get('/health', (req, res) => {
 });
 
 // 8. Mounted Route Endpoints
-// Shared Auth & Profile (with IP rate limiting)
-app.use('/api/auth', authRoutes);
-
-// Isolated Admin Module
-app.use('/api/admin', adminRoutes);
-
-// Isolated Store Module
-app.use('/api/store', storeRoutes);
-
-// Cloudflare R2 / File Uploads
-app.use('/api/uploads', uploadRoutes);
+app.use('/api/auth', authRoutes);          // Shared Auth (with IP rate limiting)
+app.use('/api/admin', adminRoutes);        // Isolated Admin Module
+app.use('/api/store', storeRoutes);        // Isolated Store Module
+app.use('/api/uploads', uploadRoutes);     // File Uploads (R2 / Local)
+app.use('/api/ocr', ocrRoutes);           // Invoice OCR Extraction
+app.use('/api/labels', labelRoutes);       // Barcode & QR Label Generation
 
 // 9. 404 Catch-All
 app.use('*', (req, res) => {

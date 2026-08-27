@@ -125,43 +125,70 @@ export const PurchaseEntry = () => {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  // OCR Invoice Simulator
-  const handleOcrSimulate = async () => {
+  // Real OCR File Upload
+  const handleOcrUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
     try {
       setLoading(true);
-      const res = await storeApi.post('/purchases/ocr-scan');
-      if (res.data?.success && res.data.extractedData) {
-        const { extractedData } = res.data;
-        setInvoiceNumber(extractedData.invoiceNumber);
-        setPurchaseDate(extractedData.invoiceDate);
+      setError(null);
+      
+      const formData = new FormData();
+      formData.append('invoice', file);
 
-        const mappedItems = extractedData.items.map((ocrItem) => {
-          const matchedMed =
-            medicines.find((m) =>
-              m.name.toLowerCase().includes(ocrItem.suggestedMedicineName.toLowerCase())
-            ) || medicines[0];
+      // We hit the global OCR route
+      const res = await storeApi.post('/../ocr/extract-invoice', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
 
-          return {
-            medicineId: matchedMed?.id || '',
-            batchNumber: ocrItem.batchNumber,
-            expiryDate: ocrItem.expiryDate,
-            quantity: ocrItem.quantity,
-            freeQuantity: ocrItem.freeQuantity,
-            purchasePrice: ocrItem.purchasePrice,
-            mrp: ocrItem.mrp,
-            taxRate: ocrItem.taxRate,
-            rackLocation: 'Auto-Inward',
-          };
-        });
+      if (res.data?.success && res.data.data?.fields) {
+        const { fields } = res.data.data;
+        
+        // Auto-fill headers
+        if (fields.invoiceNumbers?.length > 0) setInvoiceNumber(fields.invoiceNumbers[0]);
+        
+        // Auto-fill lines based on extracted batches and MRPs
+        if (fields.batchNumbers?.length > 0) {
+          const mappedItems = fields.batchNumbers.map((batchStr, idx) => {
+            return {
+              medicineId: medicines[0]?.id || '', // User still needs to select medicine from dropdown
+              batchNumber: batchStr,
+              expiryDate: fields.expiryDates[idx] ? parseOcrDate(fields.expiryDates[idx]) : '2026-12-31',
+              quantity: fields.quantities[idx] || 10,
+              freeQuantity: 0,
+              purchasePrice: (fields.mrps[idx] || 100) * 0.7, // Estimate purchase price as 70% of MRP
+              mrp: fields.mrps[idx] || 100,
+              taxRate: 12.0,
+              rackLocation: 'Auto-Inward',
+            };
+          });
+          setItems(mappedItems.slice(0, 10)); // Limit to first 10 for safety
+        }
 
-        setItems(mappedItems);
-        setSuccessMsg('OCR bill parsed and line items auto-filled.');
-        setTimeout(() => setSuccessMsg(null), 4000);
+        setSuccessMsg(`OCR Success: Extracted ${fields.batchNumbers.length} batches with ${res.data.data.confidence.toFixed(1)}% confidence.`);
+        setTimeout(() => setSuccessMsg(null), 5000);
       }
     } catch (err) {
-      console.error('OCR Simulation failed', err);
+      console.error('OCR failed', err);
+      setError('OCR extraction failed. Please enter details manually.');
     } finally {
       setLoading(false);
+      e.target.value = null; // reset file input
+    }
+  };
+
+  const parseOcrDate = (dateStr) => {
+    // Converts MM/YY or MM/YYYY to YYYY-MM-DD for input field
+    try {
+      const parts = dateStr.replace(/[-]/g, '/').split('/');
+      if (parts.length === 2) {
+        const year = parts[1].length === 2 ? `20${parts[1]}` : parts[1];
+        return `${year}-${parts[0].padStart(2, '0')}-01`;
+      }
+      return '2026-12-31';
+    } catch {
+      return '2026-12-31';
     }
   };
 
@@ -239,16 +266,20 @@ export const PurchaseEntry = () => {
                 Record distributor bills, create batch entries, and increment branch stock
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handleOcrSimulate}
-                disabled={loading}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 transition shadow-2xs cursor-pointer"
+            <div className="flex items-center gap-2 relative overflow-hidden">
+              <label
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 transition shadow-2xs ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
               >
                 <Scan size={14} />
-                <span>Simulate Bill Scan</span>
-              </button>
+                <span>{loading ? 'Scanning...' : 'Scan Bill (OCR)'}</span>
+                <input 
+                  type="file" 
+                  accept="image/jpeg, image/png, application/pdf" 
+                  className="hidden" 
+                  onChange={handleOcrUpload}
+                  disabled={loading}
+                />
+              </label>
             </div>
           </div>
 
