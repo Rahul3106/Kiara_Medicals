@@ -84,49 +84,49 @@ export const SupplierList = () => {
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
       <StoreNavbar />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="w-full mx-auto px-6 sm:px-8 lg:px-12 py-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-display">
+            <div className="flex items-center gap-3 mb-1">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 font-display">
                 Distributors & Vendors
               </span>
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-display">
               Supplier & Distributor Directory
             </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-sm text-slate-500 mt-0.5">
               Manage pharmaceutical distributors, GSTIN compliance, and procurement contacts
             </p>
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 px-3.5 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold rounded-lg shadow-xs transition self-start sm:self-auto"
+            className="inline-flex items-center gap-3 px-4.5 py-3 bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold rounded-lg shadow-xs transition self-start sm:self-auto"
           >
-            <Plus size={14} />
+            <Plus size={18} />
             <span>Add Supplier</span>
           </button>
         </div>
 
         {/* Search Input */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs mb-6">
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs mb-6">
           <div className="relative w-full sm:w-80">
-            <Search size={14} className="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search size={18} className="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search distributor by name, agency, GSTIN..."
-              className="w-full pl-8.5 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-900 transition"
+              className="w-full pl-8.5 pr-3 py-1.5.5 text-sm bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-900 transition"
             />
           </div>
         </div>
 
         {/* Supplier Cards Grid */}
         {loading ? (
-          <div className="text-center py-16 text-slate-400 text-xs font-mono">Loading suppliers...</div>
+          <div className="text-center py-16 text-slate-400 text-sm font-mono">Loading suppliers...</div>
         ) : suppliers.length === 0 ? (
-          <div className="text-center py-16 text-slate-400 text-xs">
+          <div className="text-center py-16 text-slate-400 text-sm">
             No suppliers found. Click "Add Supplier" to create your first distributor profile.
           </div>
         ) : (
@@ -134,20 +134,20 @@ export const SupplierList = () => {
             {suppliers.map((sup) => (
               <div
                 key={sup.id}
-                className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between"
+                className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-bold text-sm text-slate-900 font-display">{sup.name}</span>
-                    <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200 font-mono">
+                    <span className="font-bold text-base text-slate-900 font-display">{sup.name}</span>
+                    <span className="text-xs font-semibold bg-slate-100 text-slate-700 px-3 py-1 rounded border border-slate-200 font-mono">
                       {sup._count?.purchases || 0} Invoices
                     </span>
                   </div>
                   {sup.agencyName && (
-                    <div className="text-xs text-slate-500 mb-3">{sup.agencyName}</div>
+                    <div className="text-sm text-slate-500 mb-3">{sup.agencyName}</div>
                   )}
 
-                  <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3 font-mono">
+                  <div className="space-y-1.5 text-sm text-slate-600 border-t border-slate-100 pt-3 font-mono">
                     <div className="flex justify-between">
                       <span className="text-slate-400 font-sans">Phone:</span>
                       <span className="font-semibold text-slate-800">{sup.phone}</span>
@@ -176,8 +176,8 @@ export const SupplierList = () => {
                 </div>
 
                 {sup.address && (
-                  <div className="mt-3.5 pt-2.5 border-t border-slate-100 text-[11px] text-slate-500 truncate flex items-center gap-1">
-                    <MapPin size={11} className="text-slate-400 flex-shrink-0" />
+                  <div className="mt-3.5 pt-2.5 border-t border-slate-100 text-sm text-slate-500 truncate flex items-center gap-2">
+                    <MapPin size={14} className="text-slate-400 flex-shrink-0" />
                     <span className="truncate">{sup.address}</span>
                   </div>
                 )}
@@ -189,28 +189,28 @@ export const SupplierList = () => {
 
       {/* Add Supplier Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-5">
           <div className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden">
-            <div className="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <h3 className="font-bold text-slate-900 text-sm font-display">Add Distributor / Supplier</h3>
+            <div className="px-5 py-4.5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <h3 className="font-bold text-slate-900 text-base font-display">Add Distributor / Supplier</h3>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="text-slate-400 hover:text-slate-600 p-1"
               >
-                <X size={16} />
+                <X size={20} />
               </button>
             </div>
 
-            <form onSubmit={handleCreateSupplier} className="p-5 space-y-3 text-xs">
+            <form onSubmit={handleCreateSupplier} className="p-6 space-y-3 text-sm">
               {error && (
-                <div className="p-2.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg">
+                <div className="p-2.5 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg">
                   {error}
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                  <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                     Supplier Name *
                   </label>
                   <input
@@ -219,11 +219,11 @@ export const SupplierList = () => {
                     placeholder="e.g. Mahaveer Medi-Sales"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                    className="w-full px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                  <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                     Agency Name
                   </label>
                   <input
@@ -231,14 +231,14 @@ export const SupplierList = () => {
                     placeholder="e.g. Mahaveer Pharma Pvt Ltd"
                     value={formData.agencyName}
                     onChange={(e) => setFormData({ ...formData, agencyName: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                    className="w-full px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                  <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                     Phone / Mobile *
                   </label>
                   <input
@@ -247,11 +247,11 @@ export const SupplierList = () => {
                     placeholder="e.g. +91 98220 12345"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                    className="w-full px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                  <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                     Email Address
                   </label>
                   <input
@@ -259,24 +259,24 @@ export const SupplierList = () => {
                     placeholder="orders@distributor.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                    className="w-full px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">GSTIN</label>
+                  <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">GSTIN</label>
                   <input
                     type="text"
                     placeholder="e.g. 27AAECM5544R1Z8"
                     value={formData.gstNumber}
                     onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
-                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none font-mono"
+                    className="w-full px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                  <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                     Drug License No
                   </label>
                   <input
@@ -286,13 +286,13 @@ export const SupplierList = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, drugLicenseNo: e.target.value })
                     }
-                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none font-mono"
+                    className="w-full px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                   Physical Address
                 </label>
                 <textarea
@@ -304,18 +304,18 @@ export const SupplierList = () => {
                 ></textarea>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-4.5 py-1.5.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-1.5 text-xs font-bold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs disabled:opacity-50"
+                  className="px-4 py-1.5.5 text-sm font-bold text-white bg-teal-700 hover:bg-teal-800 rounded-lg shadow-xs disabled:opacity-50"
                 >
                   {submitting ? 'Creating...' : 'Save Distributor'}
                 </button>

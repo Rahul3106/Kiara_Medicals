@@ -56,14 +56,14 @@ export const BranchSwitcher = () => {
       <button
         onClick={() => setOpen(!open)}
         disabled={loading}
-        className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition shadow-2xs group min-w-[170px]"
+        className="flex items-center gap-3 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg px-3.5 py-1.5.5 text-sm font-semibold text-slate-700 transition shadow-2xs group min-w-[170px]"
       >
         {isAllSelected ? (
           <Globe className="w-3.5 h-3.5 text-blue-800 flex-shrink-0" />
         ) : (
           <Store className="w-3.5 h-3.5 text-teal-700 flex-shrink-0" />
         )}
-        <span className="flex-1 text-left truncate text-xs">
+        <span className="flex-1 text-left truncate text-sm">
           {isAllSelected ? 'All Branches (HQ)' : activeBranch.name}
         </span>
         {!isAllSelected && (
@@ -82,17 +82,17 @@ export const BranchSwitcher = () => {
       {open && (
         <div className="absolute right-0 top-full mt-1.5 w-72 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden animate-fade-in">
           {/* Header */}
-          <div className="px-3.5 py-2 border-b border-slate-100 bg-slate-50">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-display">
+          <div className="px-4.5 py-3 border-b border-slate-100 bg-slate-50">
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider font-display">
               Reporting Scope
             </div>
           </div>
 
-          <div className="py-1 max-h-60 overflow-y-auto">
+          <div className="py-1.5 max-h-60 overflow-y-auto">
             {/* All Branches Option */}
             <button
               onClick={() => handleSelect(null)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-slate-50 transition-colors ${
+              className={`w-full flex items-center gap-3.5 px-4 py-3 text-left hover:bg-slate-50 transition-colors ${
                 isAllSelected ? 'bg-blue-50/60 font-semibold' : ''
               }`}
             >
@@ -103,15 +103,15 @@ export const BranchSwitcher = () => {
                     : 'bg-slate-100 text-slate-600'
                 }`}
               >
-                <Globe size={14} />
+                <Globe size={18} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className={`text-xs ${isAllSelected ? 'text-blue-900 font-bold' : 'text-slate-800'}`}>
+                <div className={`text-sm ${isAllSelected ? 'text-blue-900 font-bold' : 'text-slate-800'}`}>
                   All Branches (Consolidated)
                 </div>
-                <div className="text-[10px] text-slate-500">Enterprise aggregate view</div>
+                <div className="text-xs text-slate-500">Enterprise aggregate view</div>
               </div>
-              {isAllSelected && <Check size={14} className="text-blue-800 flex-shrink-0" />}
+              {isAllSelected && <Check size={18} className="text-blue-800 flex-shrink-0" />}
             </button>
 
             <div className="mx-3 my-1 h-px bg-slate-100" />
@@ -123,7 +123,7 @@ export const BranchSwitcher = () => {
                 <button
                   key={b.id}
                   onClick={() => handleSelect(b)}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left hover:bg-slate-50 transition-colors ${
+                  className={`w-full flex items-center gap-3.5 px-4 py-3 text-left hover:bg-slate-50 transition-colors ${
                     isSelected ? 'bg-teal-50/60 font-semibold' : ''
                   }`}
                 >
@@ -134,26 +134,26 @@ export const BranchSwitcher = () => {
                         : 'bg-slate-100 text-slate-600'
                     }`}
                   >
-                    <Store size={14} />
+                    <Store size={18} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-xs truncate ${isSelected ? 'text-teal-900 font-bold' : 'text-slate-800'}`}>
+                    <div className="flex items-center gap-2.5">
+                      <span className={`text-sm truncate ${isSelected ? 'text-teal-900 font-bold' : 'text-slate-800'}`}>
                         {b.name}
                       </span>
                       <span className="font-mono text-[9px] bg-slate-100 text-slate-700 px-1 py-0.2 rounded border border-slate-200 flex-shrink-0">
                         {b.code}
                       </span>
                     </div>
-                    <div className="text-[10px] text-slate-500 truncate">{b.city || b.address}</div>
+                    <div className="text-xs text-slate-500 truncate">{b.city || b.address}</div>
                   </div>
-                  {isSelected && <Check size={14} className="text-teal-800 flex-shrink-0" />}
+                  {isSelected && <Check size={18} className="text-teal-800 flex-shrink-0" />}
                 </button>
               );
             })}
 
             {branches.length === 0 && !loading && (
-              <div className="px-3 py-3 text-center text-[11px] text-slate-400">
+              <div className="px-4 py-4 text-center text-sm text-slate-400">
                 No active branches found
               </div>
             )}

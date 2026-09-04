@@ -100,109 +100,109 @@ export const BillHistory = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
       <StoreNavbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
+      <main className="flex-1 w-full w-full mx-auto px-6 sm:px-8 lg:px-12 py-6 space-y-4">
         {/* Header with Stats */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+            <div className="flex items-center gap-3 mb-0.5">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Billing Registry
               </span>
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-display">
               Sales Invoices & Billing Archive
             </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-sm text-slate-500 mt-0.5">
               Review dispensed receipts, reprint official GST tax invoices, and process patient returns with automatic stock restoration
             </p>
           </div>
 
           <Link
             to="/store/sales/new"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs rounded-lg transition shadow-2xs self-start sm:self-auto"
+            className="inline-flex items-center gap-2.5 px-4.5 py-3 bg-teal-700 hover:bg-teal-800 text-white font-semibold text-sm rounded-lg transition shadow-2xs self-start sm:self-auto"
           >
-            <Plus size={14} />
+            <Plus size={18} />
             <span>New POS Bill</span>
           </Link>
         </div>
 
         {/* 3 Dense KPI Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Total Billed Revenue
               </span>
               <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                <IndianRupee size={13} />
+                <IndianRupee size={18} />
               </div>
             </div>
             <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
               ₹{Number(totalRevenue).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </div>
-            <div className="text-[11px] text-slate-500 mt-1 leading-tight">Gross store billing</div>
+            <div className="text-sm text-slate-500 mt-1 leading-tight">Gross store billing</div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+          <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Total Invoices
               </span>
               <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                <FileText size={13} />
+                <FileText size={18} />
               </div>
             </div>
             <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
               {totalCount}
             </div>
-            <div className="text-[11px] text-slate-500 mt-1 leading-tight">Recorded branch sales</div>
+            <div className="text-sm text-slate-500 mt-1 leading-tight">Recorded branch sales</div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+          <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Compliance Standard
               </span>
               <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                <CheckCircle2 size={13} />
+                <CheckCircle2 size={18} />
               </div>
             </div>
-            <div className="text-lg font-bold text-slate-900 font-display mt-1.5 leading-none">
+            <div className="text-xl font-bold text-slate-900 font-display mt-1.5 leading-none">
               100% Tax Compliant
             </div>
-            <div className="text-[11px] text-slate-500 mt-1 leading-tight">GSTR-1 compatible invoices</div>
+            <div className="text-sm text-slate-500 mt-1 leading-tight">GSTR-1 compatible invoices</div>
           </div>
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs flex flex-col md:flex-row gap-2.5 items-center justify-between">
-          <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-2 w-full">
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col md:flex-row gap-3.5 items-center justify-between">
+          <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-3 w-full">
             <div className="relative flex-1">
-              <Search size={14} className="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search size={18} className="text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by Bill # (e.g. KM-BR-A-2627-00001), Patient name, or phone..."
-                className="w-full pl-8.5 pr-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                className="w-full pl-8.5 pr-3 py-1.5.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:ring-1 focus:ring-slate-900 focus:outline-none"
               />
             </div>
             <button
               type="submit"
-              className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold"
+              className="px-4.5 py-1.5.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-semibold"
             >
               Search
             </button>
           </form>
 
-          <div className="flex items-center gap-2 w-full md:w-auto">
+          <div className="flex items-center gap-3 w-full md:w-auto">
             <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
                 setPage(1);
               }}
-              className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-800 focus:ring-1 focus:ring-slate-900"
+              className="px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-1 focus:ring-slate-900"
             >
               <option value="">All Statuses</option>
               <option value="COMPLETED">Completed</option>
@@ -213,44 +213,44 @@ export const BillHistory = () => {
 
         {/* Bills Table */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-          <div className="px-4 py-2.5 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-700 font-display">
+          <div className="px-4 py-3.5 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+            <span className="text-sm font-bold uppercase tracking-wider text-slate-700 font-display">
               Dispensed Invoices ({totalCount})
             </span>
-            <span className="text-xs text-slate-500 font-medium">Page {page} of {totalPages}</span>
+            <span className="text-sm text-slate-500 font-medium">Page {page} of {totalPages}</span>
           </div>
 
           {loading ? (
-            <div className="p-12 text-center text-slate-400 text-xs font-mono">
+            <div className="p-12 text-center text-slate-400 text-sm font-mono">
               Loading sales bills...
             </div>
           ) : sales.length === 0 ? (
-            <div className="p-12 text-center text-slate-400 text-xs">
+            <div className="p-12 text-center text-slate-400 text-sm">
               No sales bills found matching your criteria.
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase text-[11px] font-display">
+              <table className="w-full text-left text-sm border-collapse">
+                <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase text-sm font-display">
                   <tr>
-                    <th className="py-2.5 px-4">Invoice #</th>
-                    <th className="py-2.5 px-4">Date & Time</th>
-                    <th className="py-2.5 px-4">Customer</th>
-                    <th className="py-2.5 px-4 text-center">Items</th>
-                    <th className="py-2.5 px-4 text-center">Payment</th>
-                    <th className="py-2.5 px-4 text-right">Tax (₹)</th>
-                    <th className="py-2.5 px-4 text-right">Total (₹)</th>
-                    <th className="py-2.5 px-4 text-center">Status</th>
-                    <th className="py-2.5 px-4 text-center">Actions</th>
+                    <th className="py-3.5 px-4">Invoice #</th>
+                    <th className="py-3.5 px-4">Date & Time</th>
+                    <th className="py-3.5 px-4">Customer</th>
+                    <th className="py-3.5 px-4 text-center">Items</th>
+                    <th className="py-3.5 px-4 text-center">Payment</th>
+                    <th className="py-3.5 px-4 text-right">Tax (₹)</th>
+                    <th className="py-3.5 px-4 text-right">Total (₹)</th>
+                    <th className="py-3.5 px-4 text-center">Status</th>
+                    <th className="py-3.5 px-4 text-center">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-sm">
+                <tbody className="divide-y divide-slate-100 text-base">
                   {sales.map((sale) => (
                     <tr key={sale.id} className="hover:bg-slate-50/80 transition">
-                      <td className="py-2.5 px-4 font-mono font-bold text-xs text-slate-900">
+                      <td className="py-3.5 px-4 font-mono font-bold text-sm text-slate-900">
                         {sale.billNumber}
                       </td>
-                      <td className="py-2.5 px-4 text-slate-600 font-mono text-xs whitespace-nowrap">
+                      <td className="py-3.5 px-4 text-slate-600 font-mono text-sm whitespace-nowrap">
                         {new Date(sale.saleDate).toLocaleDateString('en-IN', {
                           day: '2-digit',
                           month: 'short',
@@ -259,45 +259,45 @@ export const BillHistory = () => {
                           minute: '2-digit',
                         })}
                       </td>
-                      <td className="py-2.5 px-4">
-                        <div className="font-semibold text-slate-900 text-xs leading-snug">
+                      <td className="py-3.5 px-4">
+                        <div className="font-semibold text-slate-900 text-sm leading-snug">
                           {sale.customer?.name || 'Walk-in Customer'}
                         </div>
                         {sale.customer?.phone && (
-                          <div className="text-[11px] text-slate-500 font-mono">
+                          <div className="text-sm text-slate-500 font-mono">
                             {sale.customer.phone}
                           </div>
                         )}
                       </td>
-                      <td className="py-2.5 px-4 text-center font-mono text-xs">
-                        <span className="bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded text-[11px] font-medium border border-slate-200">
+                      <td className="py-3.5 px-4 text-center font-mono text-sm">
+                        <span className="bg-slate-100 text-slate-700 px-2 py-0.2 rounded text-sm font-medium border border-slate-200">
                           {sale._count?.items || 0}
                         </span>
                       </td>
-                      <td className="py-2.5 px-4 text-center">
-                        <span className="font-mono text-[11px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">
+                      <td className="py-3.5 px-4 text-center">
+                        <span className="font-mono text-sm font-semibold bg-slate-100 text-slate-700 px-3 py-1 rounded border border-slate-200">
                           {sale.paymentMode}
                         </span>
                       </td>
-                      <td className="py-2.5 px-4 text-right font-mono text-slate-600 text-xs">
+                      <td className="py-3.5 px-4 text-right font-mono text-slate-600 text-sm">
                         ₹{Number(sale.totalTaxAmount).toFixed(2)}
                       </td>
-                      <td className="py-2.5 px-4 text-right font-mono font-bold text-slate-900 text-sm">
+                      <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900 text-base">
                         ₹{Number(sale.grandTotal).toFixed(2)}
                       </td>
-                      <td className="py-2.5 px-4 text-center">
+                      <td className="py-3.5 px-4 text-center">
                         {sale.status === 'COMPLETED' ? (
-                          <span className="text-[11px] bg-emerald-50 text-emerald-800 font-semibold px-2 py-0.5 rounded border border-emerald-200">
+                          <span className="text-sm bg-emerald-50 text-emerald-800 font-semibold px-3 py-1 rounded border border-emerald-200">
                             COMPLETED
                           </span>
                         ) : (
-                          <span className="text-[11px] bg-red-50 text-red-700 font-semibold px-2 py-0.5 rounded border border-red-200">
+                          <span className="text-sm bg-red-50 text-red-700 font-semibold px-3 py-1 rounded border border-red-200">
                             CANCELLED
                           </span>
                         )}
                       </td>
-                      <td className="py-2.5 px-4 text-center">
-                        <div className="flex items-center justify-center gap-1.5">
+                      <td className="py-3.5 px-4 text-center">
+                        <div className="flex items-center justify-center gap-2.5">
                           <button
                             onClick={async () => {
                               try {
@@ -314,18 +314,18 @@ export const BillHistory = () => {
                                 alert('Failed to generate thermal receipt');
                               }
                             }}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-xs font-semibold text-teal-800 transition shadow-2xs"
+                            className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded text-sm font-semibold text-teal-800 transition shadow-2xs"
                             title="Download Thermal Receipt (ESC/POS)"
                           >
-                            <Receipt size={12} />
+                            <Receipt size={16} />
                             <span>Receipt</span>
                           </button>
                           <button
                             onClick={() => handleViewInvoice(sale.id)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-xs font-semibold text-slate-700 transition shadow-2xs"
+                            className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded text-sm font-semibold text-slate-700 transition shadow-2xs"
                             title="View / Print Tax Invoice"
                           >
-                            <Printer size={12} />
+                            <Printer size={16} />
                             <span>View</span>
                           </button>
                           {sale.status === 'COMPLETED' && (
@@ -334,7 +334,7 @@ export const BillHistory = () => {
                                 setCancelModalSale(sale);
                                 setCancelReason('');
                               }}
-                              className="px-2 py-1 bg-white hover:bg-red-50 hover:text-red-700 border border-slate-300 hover:border-red-200 rounded text-xs font-medium text-slate-600 transition"
+                              className="px-3 py-1.5 bg-white hover:bg-red-50 hover:text-red-700 border border-slate-300 hover:border-red-200 rounded text-sm font-medium text-slate-600 transition"
                               title="Void Bill & Restore Inventory"
                             >
                               Void
@@ -351,22 +351,22 @@ export const BillHistory = () => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="px-4 py-2.5 border-t border-slate-200 flex justify-between items-center text-xs bg-slate-50/70">
+            <div className="px-4 py-3.5 border-t border-slate-200 flex justify-between items-center text-sm bg-slate-50/70">
               <span className="text-slate-500 font-medium">
                 Page {page} of {totalPages}
               </span>
-              <div className="flex gap-1.5">
+              <div className="flex gap-2.5">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage(page - 1)}
-                  className="px-3 py-1 bg-white border border-slate-300 rounded text-slate-700 disabled:opacity-40 font-semibold shadow-2xs hover:bg-slate-50 transition"
+                  className="px-4 py-1.5 bg-white border border-slate-300 rounded text-slate-700 disabled:opacity-40 font-semibold shadow-2xs hover:bg-slate-50 transition"
                 >
                   Previous
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(page + 1)}
-                  className="px-3 py-1 bg-white border border-slate-300 rounded text-slate-700 disabled:opacity-40 font-semibold shadow-2xs hover:bg-slate-50 transition"
+                  className="px-4 py-1.5 bg-white border border-slate-300 rounded text-slate-700 disabled:opacity-40 font-semibold shadow-2xs hover:bg-slate-50 transition"
                 >
                   Next
                 </button>
@@ -385,19 +385,19 @@ export const BillHistory = () => {
 
       {/* Cancel Bill Confirmation Modal */}
       {cancelModalSale && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-5 border border-slate-200">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 font-display">
-              <AlertCircle size={16} className="text-red-600" />
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-5">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 flex items-center gap-3 font-display">
+              <AlertCircle size={20} className="text-red-600" />
               <span>Cancel Bill & Restore Inventory</span>
             </h3>
-            <p className="text-xs text-slate-600 mt-2">
+            <p className="text-sm text-slate-600 mt-2">
               Are you sure you want to void Invoice <strong>#{cancelModalSale.billNumber}</strong>?
               All medicines will be automatically returned to batch inventory.
             </p>
 
             <div className="mt-3">
-              <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+              <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                 Reason for Return:
               </label>
               <textarea
@@ -405,15 +405,15 @@ export const BillHistory = () => {
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value)}
                 placeholder="e.g. Customer returned unopened strips, incorrect item billed..."
-                className="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                className="w-full p-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-1 focus:ring-slate-900 focus:outline-none"
               />
             </div>
 
-            <div className="mt-3.5 flex justify-end gap-2">
+            <div className="mt-3.5 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setCancelModalSale(null)}
-                className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-semibold text-slate-700"
+                className="px-4.5 py-1.5.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm font-semibold text-slate-700"
               >
                 Keep Bill
               </button>
@@ -421,7 +421,7 @@ export const BillHistory = () => {
                 type="button"
                 onClick={handleCancelSale}
                 disabled={actionLoading}
-                className="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-xs"
+                className="px-4.5 py-1.5.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold shadow-xs"
               >
                 {actionLoading ? 'Voiding...' : 'Confirm Void'}
               </button>

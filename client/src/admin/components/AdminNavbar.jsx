@@ -30,7 +30,7 @@ export const AdminNavbar = () => {
   const { user, logout } = useAuth();
 
   const navClass = ({ isActive }) =>
-    `flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap rounded-lg flex-shrink-0 ${
+    `flex items-center gap-2.5 px-3.5 py-1.5.5 text-sm font-semibold transition-all duration-150 whitespace-nowrap rounded-lg flex-shrink-0 ${
       isActive
         ? 'bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs font-bold'
         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent'
@@ -41,10 +41,10 @@ export const AdminNavbar = () => {
   return (
     <>
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-14 flex items-center justify-between gap-2">
+        <div className="w-full mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="h-14 flex items-center justify-between gap-3">
             {/* Left: Brand */}
-            <div className="flex items-center gap-2.5 flex-shrink-0">
+            <div className="flex items-center gap-3.5 flex-shrink-0">
               <button
                 type="button"
                 className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100"
@@ -54,15 +54,15 @@ export const AdminNavbar = () => {
                 <Menu size={18} />
               </button>
 
-              <Link to="/admin/dashboard" className="flex items-center gap-2 group flex-shrink-0">
-                <div className="w-7 h-7 bg-slate-900 rounded-md flex items-center justify-center text-white font-bold text-xs tracking-tight shadow-2xs group-hover:bg-slate-800 transition">
+              <Link to="/admin/dashboard" className="flex items-center gap-3 group flex-shrink-0">
+                <div className="w-7 h-7 bg-slate-900 rounded-md flex items-center justify-center text-white font-bold text-sm tracking-tight shadow-2xs group-hover:bg-slate-800 transition">
                   KM
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-slate-900 text-sm tracking-tight font-display whitespace-nowrap">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-bold text-slate-900 text-base tracking-tight font-display whitespace-nowrap">
                     Kiara Medicals
                   </span>
-                  <span className="font-mono text-[10px] font-bold bg-blue-50 text-blue-800 px-1 py-0.2 rounded border border-blue-200">
+                  <span className="font-mono text-xs font-bold bg-blue-50 text-blue-800 px-1 py-0.2 rounded border border-blue-200">
                     HQ
                   </span>
                 </div>
@@ -70,29 +70,29 @@ export const AdminNavbar = () => {
             </div>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1 overflow-x-auto py-1">
+            <nav className="hidden lg:flex items-center gap-2 overflow-x-auto py-1.5">
               {navItems.map((item) => (
                 <NavLink key={item.path} to={item.path} className={navClass}>
-                  <item.icon size={14} className="flex-shrink-0" />
+                  <item.icon size={18} className="flex-shrink-0" />
                   <span>{item.name}</span>
                 </NavLink>
               ))}
             </nav>
 
             {/* Right: BranchSwitcher + Profile (Single-line row, no wrapping) */}
-            <div className="flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
+            <div className="flex items-center gap-3 flex-shrink-0 whitespace-nowrap">
               <BranchSwitcher />
 
               {/* Single-line user info */}
-              <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200 flex-shrink-0">
-                <div className="w-7 h-7 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center font-mono font-bold text-xs text-slate-700 flex-shrink-0">
+              <div className="hidden sm:flex items-center gap-3 pl-2 border-l border-slate-200 flex-shrink-0">
+                <div className="w-7 h-7 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center font-mono font-bold text-sm text-slate-700 flex-shrink-0">
                   {initial}
                 </div>
                 <div className="flex flex-col text-left leading-none">
-                  <span className="text-xs font-semibold text-slate-900 truncate max-w-[120px]">
+                  <span className="text-sm font-semibold text-slate-900 truncate max-w-[120px]">
                     {user?.name || 'Administrator'}
                   </span>
-                  <span className="text-[10px] text-blue-700 font-medium mt-0.5">
+                  <span className="text-xs text-blue-700 font-medium mt-0.5">
                     Super Admin
                   </span>
                 </div>
@@ -100,10 +100,10 @@ export const AdminNavbar = () => {
 
               <button
                 onClick={logout}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition flex-shrink-0 whitespace-nowrap"
+                className="inline-flex items-center gap-2.5 px-3.5 py-1.5.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 transition flex-shrink-0 whitespace-nowrap"
                 title="Sign out of HQ"
               >
-                <LogOut size={13} />
+                <LogOut size={18} />
                 <span className="hidden sm:inline">Sign out</span>
               </button>
             </div>
@@ -118,16 +118,16 @@ export const AdminNavbar = () => {
             className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-4 shadow-xl flex flex-col justify-between">
+          <div className="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-5 shadow-xl flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center font-bold text-white text-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center font-bold text-white text-sm">
                     KM
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900">Kiara Medicals</div>
-                    <div className="text-[10px] text-blue-800 font-mono">HQ Admin</div>
+                    <div className="text-sm font-bold text-slate-900">Kiara Medicals</div>
+                    <div className="text-xs text-blue-800 font-mono">HQ Admin</div>
                   </div>
                 </div>
                 <button
@@ -146,7 +146,7 @@ export const AdminNavbar = () => {
                     onClick={() => setMobileOpen(false)}
                     className={navClass}
                   >
-                    <item.icon size={16} />
+                    <item.icon size={20} />
                     <span>{item.name}</span>
                   </NavLink>
                 ))}
@@ -154,16 +154,16 @@ export const AdminNavbar = () => {
             </div>
 
             <div className="border-t border-slate-100 pt-3">
-              <div className="text-xs font-semibold text-slate-900 mb-0.5">{user?.name}</div>
-              <div className="text-[10px] text-blue-700 font-medium mb-3">Super Admin</div>
+              <div className="text-sm font-semibold text-slate-900 mb-0.5">{user?.name}</div>
+              <div className="text-xs text-blue-700 font-medium mb-3">Super Admin</div>
               <button
                 onClick={() => {
                   logout();
                   setMobileOpen(false);
                 }}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs font-semibold"
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm font-semibold"
               >
-                <LogOut size={14} />
+                <LogOut size={18} />
                 <span>Sign Out</span>
               </button>
             </div>

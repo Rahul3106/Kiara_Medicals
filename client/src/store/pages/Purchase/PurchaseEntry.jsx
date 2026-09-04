@@ -249,28 +249,28 @@ export const PurchaseEntry = () => {
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
       <StoreNavbar />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="w-full mx-auto px-6 sm:px-8 lg:px-12 py-6">
         <form onSubmit={handleSubmit}>
           {/* Header & OCR Action */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-display">
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 font-display">
                   Inward Logistics
                 </span>
               </div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-display">
                 New Purchase Order & Stock Inward
               </h1>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-sm text-slate-500 mt-0.5">
                 Record distributor bills, create batch entries, and increment branch stock
               </p>
             </div>
-            <div className="flex items-center gap-2 relative overflow-hidden">
+            <div className="flex items-center gap-3 relative overflow-hidden">
               <label
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 transition shadow-2xs ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                className={`inline-flex items-center gap-2.5 px-4.5 py-3 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 transition shadow-2xs ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
               >
-                <Scan size={14} />
+                <Scan size={18} />
                 <span>{loading ? 'Scanning...' : 'Scan Bill (OCR)'}</span>
                 <input 
                   type="file" 
@@ -285,34 +285,34 @@ export const PurchaseEntry = () => {
 
           {/* Success / Error Alerts */}
           {successMsg && (
-            <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-lg flex items-center gap-2">
-              <CheckCircle2 size={15} className="text-emerald-700" />
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm rounded-lg flex items-center gap-3">
+              <CheckCircle2 size={20} className="text-emerald-700" />
               <span>{successMsg}</span>
             </div>
           )}
           {error && (
-            <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg flex items-center gap-2">
-              <AlertCircle size={15} className="text-red-600" />
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg flex items-center gap-3">
+              <AlertCircle size={20} className="text-red-600" />
               <span>{error}</span>
             </div>
           )}
 
           {/* Invoice Header Details */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs mb-6">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3.5 font-display">
+          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs mb-6">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-3.5 font-display">
               1. Supplier & Invoice Information
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                   Distributor / Supplier *
                 </label>
                 <select
                   required
                   value={supplierId}
                   onChange={(e) => setSupplierId(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                  className="w-full px-4 py-1.5.5 text-sm bg-white border border-slate-300 rounded-lg focus:ring-1 focus:ring-slate-900 focus:outline-none"
                 >
                   {suppliers.map((sup) => (
                     <option key={sup.id} value={sup.id}>
@@ -323,7 +323,7 @@ export const PurchaseEntry = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                   Invoice Number *
                 </label>
                 <input
@@ -332,12 +332,12 @@ export const PurchaseEntry = () => {
                   placeholder="e.g. INV-2026-9081"
                   value={invoiceNumber}
                   onChange={(e) => setInvoiceNumber(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                  className="w-full px-4 py-1.5.5 text-sm bg-white border border-slate-300 rounded-lg font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                   Invoice Date *
                 </label>
                 <input
@@ -345,18 +345,18 @@ export const PurchaseEntry = () => {
                   required
                   value={purchaseDate}
                   onChange={(e) => setPurchaseDate(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                  className="w-full px-4 py-1.5.5 text-sm bg-white border border-slate-300 rounded-lg focus:ring-1 focus:ring-slate-900 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1 font-display">
+                <label className="block text-sm font-bold uppercase text-slate-600 mb-1 font-display">
                   Payment Status
                 </label>
                 <select
                   value={paymentStatus}
                   onChange={(e) => setPaymentStatus(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                  className="w-full px-4 py-1.5.5 text-sm bg-white border border-slate-300 rounded-lg focus:ring-1 focus:ring-slate-900 focus:outline-none"
                 >
                   <option value="PAID">Paid in Full</option>
                   <option value="PARTIAL">Partially Paid</option>
@@ -368,35 +368,35 @@ export const PurchaseEntry = () => {
 
           {/* Itemized Table */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden mb-6">
-            <div className="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 font-display">
+            <div className="px-5 py-4.5 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 font-display">
                 2. Inward Line Items ({items.length})
               </h2>
               <button
                 type="button"
                 onClick={addItemRow}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 transition"
+                className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition"
               >
-                <Plus size={13} />
+                <Plus size={18} />
                 <span>Add Item</span>
               </button>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-700">
-                <thead className="bg-slate-50 uppercase font-bold text-slate-600 border-b border-slate-200 font-display text-[10px]">
+              <table className="w-full text-left text-sm text-slate-700">
+                <thead className="bg-slate-50 uppercase font-bold text-slate-600 border-b border-slate-200 font-display text-xs">
                   <tr>
-                    <th className="px-3 py-2.5 min-w-[180px]">Medicine / Salt</th>
-                    <th className="px-3 py-2.5 min-w-[120px]">Batch No</th>
-                    <th className="px-3 py-2.5 min-w-[130px]">Expiry</th>
-                    <th className="px-3 py-2.5 w-16 text-right">Qty</th>
-                    <th className="px-3 py-2.5 w-16 text-right">Free</th>
-                    <th className="px-3 py-2.5 w-20 text-right">Cost (₹)</th>
-                    <th className="px-3 py-2.5 w-20 text-right">MRP (₹)</th>
-                    <th className="px-3 py-2.5 w-16 text-center">GST%</th>
-                    <th className="px-3 py-2.5 min-w-[100px]">Rack</th>
-                    <th className="px-3 py-2.5 text-right">Net (₹)</th>
-                    <th className="px-3 py-2.5 w-8 text-center"></th>
+                    <th className="px-4 py-3.5 min-w-[180px]">Medicine / Salt</th>
+                    <th className="px-4 py-3.5 min-w-[120px]">Batch No</th>
+                    <th className="px-4 py-3.5 min-w-[130px]">Expiry</th>
+                    <th className="px-4 py-3.5 w-16 text-right">Qty</th>
+                    <th className="px-4 py-3.5 w-16 text-right">Free</th>
+                    <th className="px-4 py-3.5 w-20 text-right">Cost (₹)</th>
+                    <th className="px-4 py-3.5 w-20 text-right">MRP (₹)</th>
+                    <th className="px-4 py-3.5 w-16 text-center">GST%</th>
+                    <th className="px-4 py-3.5 min-w-[100px]">Rack</th>
+                    <th className="px-4 py-3.5 text-right">Net (₹)</th>
+                    <th className="px-4 py-3.5 w-8 text-center"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -408,12 +408,12 @@ export const PurchaseEntry = () => {
 
                     return (
                       <tr key={idx} className="hover:bg-slate-50/60">
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <select
                             required
                             value={item.medicineId}
                             onChange={(e) => handleItemChange(idx, 'medicineId', e.target.value)}
-                            className="w-full px-2 py-1 bg-white border border-slate-300 rounded text-xs font-medium focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm font-medium focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           >
                             {medicines.map((m) => (
                               <option key={m.id} value={m.id}>
@@ -422,7 +422,7 @@ export const PurchaseEntry = () => {
                             ))}
                           </select>
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="text"
                             required
@@ -431,29 +431,29 @@ export const PurchaseEntry = () => {
                             onChange={(e) =>
                               handleItemChange(idx, 'batchNumber', e.target.value.toUpperCase())
                             }
-                            className="w-full px-2 py-1 bg-white border border-slate-300 rounded text-xs font-mono font-bold focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm font-mono font-bold focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="date"
                             required
                             value={item.expiryDate}
                             onChange={(e) => handleItemChange(idx, 'expiryDate', e.target.value)}
-                            className="w-full px-2 py-1 bg-white border border-slate-300 rounded text-xs focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="number"
                             min="1"
                             required
                             value={item.quantity}
                             onChange={(e) => handleItemChange(idx, 'quantity', e.target.value)}
-                            className="w-full px-1.5 py-1 text-right bg-white border border-slate-300 rounded text-xs font-mono font-bold focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-right bg-white border border-slate-300 rounded text-sm font-mono font-bold focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="number"
                             min="0"
@@ -461,10 +461,10 @@ export const PurchaseEntry = () => {
                             onChange={(e) =>
                               handleItemChange(idx, 'freeQuantity', e.target.value)
                             }
-                            className="w-full px-1.5 py-1 text-right bg-white border border-slate-300 rounded text-xs font-mono text-teal-800 font-semibold focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-right bg-white border border-slate-300 rounded text-sm font-mono text-teal-800 font-semibold focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="number"
                             step="0.01"
@@ -474,10 +474,10 @@ export const PurchaseEntry = () => {
                             onChange={(e) =>
                               handleItemChange(idx, 'purchasePrice', e.target.value)
                             }
-                            className="w-full px-1.5 py-1 text-right bg-white border border-slate-300 rounded text-xs font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-right bg-white border border-slate-300 rounded text-sm font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="number"
                             step="0.01"
@@ -485,14 +485,14 @@ export const PurchaseEntry = () => {
                             required
                             value={item.mrp}
                             onChange={(e) => handleItemChange(idx, 'mrp', e.target.value)}
-                            className="w-full px-1.5 py-1 text-right bg-white border border-slate-300 rounded text-xs font-mono font-bold text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-2 py-1.5 text-right bg-white border border-slate-300 rounded text-sm font-mono font-bold text-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <select
                             value={item.taxRate}
                             onChange={(e) => handleItemChange(idx, 'taxRate', e.target.value)}
-                            className="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs text-center focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-1 py-1.5 bg-white border border-slate-300 rounded text-sm text-center focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           >
                             <option value="0">0%</option>
                             <option value="5">5%</option>
@@ -501,7 +501,7 @@ export const PurchaseEntry = () => {
                             <option value="28">28%</option>
                           </select>
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-4 py-3">
                           <input
                             type="text"
                             placeholder="Rack A-1"
@@ -509,20 +509,20 @@ export const PurchaseEntry = () => {
                             onChange={(e) =>
                               handleItemChange(idx, 'rackLocation', e.target.value)
                             }
-                            className="w-full px-2 py-1 bg-white border border-slate-300 rounded text-xs font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
                           />
                         </td>
-                        <td className="px-3 py-2 text-right font-bold text-slate-900 font-mono">
+                        <td className="px-4 py-3 text-right font-bold text-slate-900 font-mono">
                           ₹{itemTotal.toFixed(2)}
                         </td>
-                        <td className="px-3 py-2 text-center">
+                        <td className="px-4 py-3 text-center">
                           <button
                             type="button"
                             disabled={items.length <= 1}
                             onClick={() => removeItemRow(idx)}
                             className="text-slate-400 hover:text-red-700 disabled:opacity-20 p-1"
                           >
-                            <Trash2 size={13} />
+                            <Trash2 size={18} />
                           </button>
                         </td>
                       </tr>
@@ -536,8 +536,8 @@ export const PurchaseEntry = () => {
           {/* Invoice Summary & Submission */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Notes */}
-            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 font-display">
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
+              <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 font-display">
                 Receiving Notes / Remarks
               </label>
               <textarea
@@ -545,27 +545,27 @@ export const PurchaseEntry = () => {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Add supplier delivery or batch condition remarks..."
-                className="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                className="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:ring-1 focus:ring-slate-900 focus:outline-none"
               ></textarea>
             </div>
 
             {/* Calculations Box */}
-            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-slate-100 pb-2 font-display">
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 border-b border-slate-100 pb-2 font-display">
                 Financial Summary
               </h3>
 
-              <div className="flex justify-between text-xs text-slate-600">
+              <div className="flex justify-between text-sm text-slate-600">
                 <span>Taxable Items Subtotal:</span>
                 <span className="font-mono font-medium">₹{subTotal.toFixed(2)}</span>
               </div>
 
-              <div className="flex justify-between text-xs text-slate-600">
+              <div className="flex justify-between text-sm text-slate-600">
                 <span>Total GST (Input Tax Credit):</span>
                 <span className="font-mono font-medium text-slate-800">₹{taxAmount.toFixed(2)}</span>
               </div>
 
-              <div className="flex justify-between items-center text-xs text-slate-600">
+              <div className="flex justify-between items-center text-sm text-slate-600">
                 <span>Distributor Discount (₹):</span>
                 <input
                   type="number"
@@ -573,13 +573,13 @@ export const PurchaseEntry = () => {
                   step="0.01"
                   value={discountAmount}
                   onChange={(e) => setDiscountAmount(e.target.value)}
-                  className="w-24 px-2 py-1 text-right bg-white border border-slate-300 rounded text-xs font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
+                  className="w-24 px-3 py-1.5 text-right bg-white border border-slate-300 rounded text-sm font-mono focus:ring-1 focus:ring-slate-900 focus:outline-none"
                 />
               </div>
 
               <div className="border-t border-slate-200 pt-2.5 flex justify-between items-baseline">
-                <span className="font-bold text-sm text-slate-900 font-display">Net Invoice Amount:</span>
-                <span className="text-xl font-bold text-slate-900 font-mono">
+                <span className="font-bold text-base text-slate-900 font-display">Net Invoice Amount:</span>
+                <span className="text-2xl font-bold text-slate-900 font-mono">
                   ₹{netAmount.toFixed(2)}
                 </span>
               </div>
@@ -588,9 +588,9 @@ export const PurchaseEntry = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-2.5 px-4 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs rounded-lg shadow-xs transition disabled:opacity-50 flex items-center justify-center gap-1.5"
+                  className="w-full py-3.5 px-4 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm rounded-lg shadow-xs transition disabled:opacity-50 flex items-center justify-center gap-2.5"
                 >
-                  <ArrowDownToLine size={14} />
+                  <ArrowDownToLine size={18} />
                   <span>{submitting ? 'Recording Inward Entry...' : 'Save Purchase & Inward Stock'}</span>
                 </button>
               </div>

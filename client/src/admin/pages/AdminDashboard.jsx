@@ -21,7 +21,7 @@ const fmtShort = (v) => `₹${Number(v || 0).toLocaleString('en-IN', { maximumFr
 const CustomBarTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm text-xs">
+    <div className="bg-white border border-slate-200 rounded-lg px-3.5 py-1.5.5 shadow-sm text-sm">
       <p className="font-bold text-slate-900 mb-0.5">{label}</p>
       {payload.map((p, i) => (
         <p key={i} className="text-slate-600 font-mono">
@@ -36,7 +36,7 @@ const CustomPieTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const { name, value } = payload[0];
   return (
-    <div className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm text-xs">
+    <div className="bg-white border border-slate-200 rounded-lg px-3.5 py-1.5.5 shadow-sm text-sm">
       <p className="font-semibold text-slate-800">{name}</p>
       <p className="font-bold text-teal-800 font-mono">{fmt(value)}</p>
     </div>
@@ -94,25 +94,25 @@ export const AdminDashboard = () => {
   const totalPieValue = pieData.reduce((s, d) => s + d.value, 0);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50/50 text-slate-900 flex flex-col font-sans">
       <AdminNavbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
+      <main className="flex-1 w-full mx-auto px-6 sm:px-8 lg:px-12 py-6 space-y-6">
         {/* Top Header & Scope Banner */}
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+            <div className="flex items-center gap-3 mb-0.5">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Headquarters Command
               </span>
-              <span className="font-mono text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200 px-1.5 py-0.2 rounded">
+              <span className="font-mono text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.2 rounded">
                 {activeBranch ? activeBranch.code : 'CONSOLIDATED'}
               </span>
             </div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight font-display">
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight font-display">
               {activeBranch ? `${activeBranch.name} Performance` : 'Enterprise Consolidated Overview'}
             </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-sm text-slate-500 mt-0.5">
               {activeBranch
                 ? `Filtered strictly to branch [${activeBranch.code}]`
                 : 'Aggregated real-time metrics across all active Kiara Medical retail stores'}
@@ -121,96 +121,96 @@ export const AdminDashboard = () => {
 
           <button
             onClick={fetchDashboardData}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 transition shadow-2xs self-start sm:self-auto"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5.5 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 transition shadow-2xs self-start sm:self-auto"
           >
-            <RotateCw size={13} className={loading ? 'animate-spin' : ''} />
+            <RotateCw size={18} className={loading ? 'animate-spin' : ''} />
             <span>Refresh Data</span>
           </button>
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-slate-400 text-xs font-mono">
+          <div className="text-center py-20 text-slate-400 text-sm font-mono">
             Loading enterprise metrics...
           </div>
         ) : (
           <>
             {/* Dense 4 KPI Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Card 1: Revenue */}
-              <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+              <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                     Total Enterprise Revenue
                   </span>
                   <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                    <IndianRupee size={13} />
+                    <IndianRupee size={18} />
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
                   {fmt(summary?.totalRevenue)}
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                <div className="text-sm text-slate-500 mt-1 leading-tight">
                   Across <span className="font-semibold text-slate-700 font-mono">{summary?.totalSalesCount || 0}</span> invoices
                 </div>
               </div>
 
               {/* Card 2: Inventory Valuation (Cost) */}
-              <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+              <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                     Stock Valuation (Cost)
                   </span>
                   <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                    <Layers size={13} />
+                    <Layers size={18} />
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
                   {fmtShort(summary?.inventoryCostValue)}
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                <div className="text-sm text-slate-500 mt-1 leading-tight">
                   Retail: <span className="font-semibold text-slate-700 font-mono">{fmtShort(summary?.inventoryRetailValue)}</span>
                 </div>
               </div>
 
               {/* Card 3: Formulations & Units */}
-              <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+              <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                     Master Formulations
                   </span>
                   <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                    <Package size={13} />
+                    <Package size={18} />
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
                   {summary?.totalMedicines || 0}
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                <div className="text-sm text-slate-500 mt-1 leading-tight">
                   <span className="font-semibold text-slate-700 font-mono">{summary?.totalStockUnits || 0}</span> stock units
                 </div>
               </div>
 
               {/* Card 4: Near Expiry */}
-              <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+              <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                     Near Expiry Watch (90d)
                   </span>
                   <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                    <Clock size={13} />
+                    <Clock size={18} />
                   </div>
                 </div>
-                <div className="text-2xl font-bold font-mono tracking-tight mt-1.5 leading-none flex items-baseline gap-2">
+                <div className="text-2xl font-bold font-mono tracking-tight mt-1.5 leading-none flex items-baseline gap-3">
                   <span className={summary?.nearExpiryBatchesCount > 0 ? 'text-amber-700' : 'text-slate-900'}>
                     {summary?.nearExpiryBatchesCount || 0}
                   </span>
                   {summary?.nearExpiryBatchesCount > 0 && (
-                    <span className="text-[10px] font-sans font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded">
+                    <span className="text-xs font-sans font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.2 rounded">
                       Action
                     </span>
                   )}
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                <div className="text-sm text-slate-500 mt-1 leading-tight">
                   Batches nearing expiry
                 </div>
               </div>
@@ -218,17 +218,17 @@ export const AdminDashboard = () => {
 
             {/* Charts Row */}
             {!activeBranch && comparison.length > 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                 {/* Revenue Bar Chart */}
-                <div className="lg:col-span-3 bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
+                <div className="lg:col-span-3 bg-white border border-slate-200 rounded-xl p-5 shadow-2xs">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h2 className="text-xs font-bold text-slate-900 font-display uppercase tracking-wider">
+                      <h2 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider">
                         Branch Revenue & Stock Cost
                       </h2>
-                      <p className="text-[11px] text-slate-500">Comparative retail performance by store</p>
+                      <p className="text-sm text-slate-500">Comparative retail performance by store</p>
                     </div>
-                    <span className="text-[10px] font-mono font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">
+                    <span className="text-xs font-mono font-semibold bg-slate-100 text-slate-700 px-3 py-1 rounded border border-slate-200">
                       {comparison.length} Stores
                     </span>
                   </div>
@@ -245,12 +245,12 @@ export const AdminDashboard = () => {
                 </div>
 
                 {/* Stock Distribution Pie Chart */}
-                <div className="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-4 shadow-2xs flex flex-col justify-between">
+                <div className="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-5 shadow-2xs flex flex-col justify-between">
                   <div>
-                    <h2 className="text-xs font-bold text-slate-900 font-display uppercase tracking-wider mb-0.5">
+                    <h2 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider mb-0.5">
                       Inventory Capital Share
                     </h2>
-                    <p className="text-[11px] text-slate-500 mb-2">Locked stock capital per store</p>
+                    <p className="text-sm text-slate-500 mb-2">Locked stock capital per store</p>
                   </div>
                   <ResponsiveContainer width="100%" height={130}>
                     <PieChart>
@@ -273,14 +273,14 @@ export const AdminDashboard = () => {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="text-center my-1">
-                    <span className="text-[10px] text-slate-500 uppercase font-semibold">Total Stock Capital: </span>
-                    <span className="text-sm font-bold text-slate-900 font-mono">{fmtShort(totalPieValue)}</span>
+                    <span className="text-xs text-slate-500 uppercase font-semibold">Total Stock Capital: </span>
+                    <span className="text-base font-bold text-slate-900 font-mono">{fmtShort(totalPieValue)}</span>
                   </div>
-                  <div className="flex flex-wrap gap-2 justify-center border-t border-slate-100 pt-2">
+                  <div className="flex flex-wrap gap-3 justify-center border-t border-slate-100 pt-2">
                     {pieData.map((d, i) => (
-                      <div key={i} className="flex items-center gap-1.5 text-xs text-slate-600">
+                      <div key={i} className="flex items-center gap-2.5 text-sm text-slate-600">
                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
-                        <span className="text-[11px] font-medium">{d.name}</span>
+                        <span className="text-sm font-medium">{d.name}</span>
                       </div>
                     ))}
                   </div>
@@ -291,43 +291,43 @@ export const AdminDashboard = () => {
             {/* Branch Performance Comparison Matrix */}
             {!activeBranch && comparison.length > 0 && (
               <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
-                <div className="px-4 py-2.5 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 font-display">
+                <div className="px-4 py-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 font-display">
                     Branch Operational Matrix ({comparison.length})
                   </h2>
-                  <span className="text-xs text-slate-500 font-medium">Live store telemetry</span>
+                  <span className="text-sm text-slate-500 font-medium">Live store telemetry</span>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-700">
-                    <thead className="bg-slate-50 text-[11px] uppercase font-bold text-slate-600 border-b border-slate-200 font-display">
+                  <table className="w-full text-left text-sm text-slate-700">
+                    <thead className="bg-slate-50 text-sm uppercase font-bold text-slate-600 border-b border-slate-200 font-display">
                       <tr>
-                        <th className="px-4 py-2.5">Store Name</th>
-                        <th className="px-4 py-2.5">Code</th>
-                        <th className="px-4 py-2.5">City</th>
-                        <th className="px-4 py-2.5 text-center">Staff</th>
-                        <th className="px-4 py-2.5 text-center">Batches</th>
-                        <th className="px-4 py-2.5 text-center">Bills</th>
-                        <th className="px-4 py-2.5 text-right">Inventory Valuation</th>
-                        <th className="px-4 py-2.5 text-right">Total Revenue</th>
+                        <th className="px-4 py-3.5">Store Name</th>
+                        <th className="px-4 py-3.5">Code</th>
+                        <th className="px-4 py-3.5">City</th>
+                        <th className="px-4 py-3.5 text-center">Staff</th>
+                        <th className="px-4 py-3.5 text-center">Batches</th>
+                        <th className="px-4 py-3.5 text-center">Bills</th>
+                        <th className="px-4 py-3.5 text-right">Inventory Valuation</th>
+                        <th className="px-4 py-3.5 text-right">Total Revenue</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 text-sm">
+                    <tbody className="divide-y divide-slate-100 text-base">
                       {comparison.map((br) => (
                         <tr key={br.id} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="px-4 py-2.5 font-semibold text-slate-900 text-xs">{br.name}</td>
-                          <td className="px-4 py-2.5">
-                            <span className="font-mono text-xs font-semibold bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200">
+                          <td className="px-4 py-3.5 font-semibold text-slate-900 text-sm">{br.name}</td>
+                          <td className="px-4 py-3.5">
+                            <span className="font-mono text-sm font-semibold bg-slate-100 text-slate-800 px-3 py-1 rounded border border-slate-200">
                               {br.code}
                             </span>
                           </td>
-                          <td className="px-4 py-2.5 text-slate-600 text-xs">{br.city}</td>
-                          <td className="px-4 py-2.5 text-center font-mono text-xs">{br.userCount}</td>
-                          <td className="px-4 py-2.5 text-center font-mono text-teal-800 font-bold text-xs">{br.batchCount}</td>
-                          <td className="px-4 py-2.5 text-center font-mono text-xs">{br.totalBills}</td>
-                          <td className="px-4 py-2.5 text-right font-mono font-semibold text-slate-800 text-xs">
+                          <td className="px-4 py-3.5 text-slate-600 text-sm">{br.city}</td>
+                          <td className="px-4 py-3.5 text-center font-mono text-sm">{br.userCount}</td>
+                          <td className="px-4 py-3.5 text-center font-mono text-teal-800 font-bold text-sm">{br.batchCount}</td>
+                          <td className="px-4 py-3.5 text-center font-mono text-sm">{br.totalBills}</td>
+                          <td className="px-4 py-3.5 text-right font-mono font-semibold text-slate-800 text-sm">
                             {fmtShort(br.inventoryValuation)}
                           </td>
-                          <td className="px-4 py-2.5 text-right font-mono font-bold text-slate-900 text-sm">
+                          <td className="px-4 py-3.5 text-right font-mono font-bold text-slate-900 text-base">
                             {fmt(br.totalRevenue)}
                           </td>
                         </tr>
@@ -341,29 +341,29 @@ export const AdminDashboard = () => {
             {/* Quick Action Navigation Cards */}
             <div className="pt-1">
               <div className="mb-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 font-display">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                   Headquarters Modules
                 </h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                 {quickActions.map((action) => (
                   <Link
                     key={action.path}
                     to={action.path}
-                    className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-3 flex items-center justify-between transition group shadow-2xs"
+                    className="bg-white border border-slate-200 hover:border-slate-400 rounded-xl p-4 flex items-center justify-between transition group shadow-2xs"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                       <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 group-hover:text-blue-900 transition">
-                        <action.icon size={16} />
+                        <action.icon size={20} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-blue-900 transition font-display">
+                        <div className="text-sm font-bold text-slate-900 group-hover:text-blue-900 transition font-display">
                           {action.title}
                         </div>
-                        <div className="text-[11px] text-slate-500">{action.desc}</div>
+                        <div className="text-sm text-slate-500">{action.desc}</div>
                       </div>
                     </div>
-                    <ArrowUpRight size={14} className="text-slate-400 group-hover:text-slate-900 transition" />
+                    <ArrowUpRight size={18} className="text-slate-400 group-hover:text-slate-900 transition" />
                   </Link>
                 ))}
               </div>

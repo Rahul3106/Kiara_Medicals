@@ -118,19 +118,19 @@ export const StoreReports = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
       <StoreNavbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
+      <main className="flex-1 w-full w-full mx-auto px-6 sm:px-8 lg:px-12 py-6 space-y-4">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+            <div className="flex items-center gap-3 mb-0.5">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                 Analytics & Filings
               </span>
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-display">
               Store Analytics & Financial Intelligence
             </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-sm text-slate-500 mt-0.5">
               Live retail branch sales trends, GSTR-1 tax filings, and dead stock optimization
             </p>
           </div>
@@ -139,37 +139,37 @@ export const StoreReports = () => {
           <div className="flex items-center bg-white p-1 rounded-lg border border-slate-200 shadow-2xs self-start sm:self-auto">
             <button
               onClick={() => setActiveTab('SALES')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition flex items-center gap-1.5 ${
+              className={`px-4 py-1.5.5 rounded-md text-sm font-semibold transition flex items-center gap-2.5 ${
                 activeTab === 'SALES'
                   ? 'bg-slate-900 text-white shadow-2xs font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <TrendingUp size={13} />
+              <TrendingUp size={18} />
               <span>Sales Trends</span>
             </button>
 
             <button
               onClick={() => setActiveTab('GST')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition flex items-center gap-1.5 ${
+              className={`px-4 py-1.5.5 rounded-md text-sm font-semibold transition flex items-center gap-2.5 ${
                 activeTab === 'GST'
                   ? 'bg-slate-900 text-white shadow-2xs font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Receipt size={13} />
+              <Receipt size={18} />
               <span>GSTR-1 Tax</span>
             </button>
 
             <button
               onClick={() => setActiveTab('STOCK_MOVEMENT')}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition flex items-center gap-1.5 ${
+              className={`px-4 py-1.5.5 rounded-md text-sm font-semibold transition flex items-center gap-2.5 ${
                 activeTab === 'STOCK_MOVEMENT'
                   ? 'bg-slate-900 text-white shadow-2xs font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Package size={13} />
+              <Package size={18} />
               <span>Stock Velocity</span>
             </button>
           </div>
@@ -179,12 +179,12 @@ export const StoreReports = () => {
         {activeTab === 'SALES' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-slate-500 uppercase font-display">Time Range:</span>
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-bold text-slate-500 uppercase font-display">Time Range:</span>
                 <select
                   value={days}
                   onChange={(e) => setDays(Number(e.target.value))}
-                  className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs focus:ring-1 focus:ring-slate-900"
+                  className="px-4 py-1.5.5 bg-white border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 shadow-2xs focus:ring-1 focus:ring-slate-900"
                 >
                   <option value={7}>Last 7 Days</option>
                   <option value={14}>Last 14 Days</option>
@@ -195,104 +195,104 @@ export const StoreReports = () => {
 
               <button
                 onClick={fetchOverview}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs"
+                className="inline-flex items-center gap-2.5 px-4 py-1.5.5 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 shadow-2xs"
               >
-                <RotateCw size={12} className={loading ? 'animate-spin' : ''} />
+                <RotateCw size={16} className={loading ? 'animate-spin' : ''} />
                 <span>Refresh</span>
               </button>
             </div>
 
             {loading ? (
-              <div className="p-16 text-center text-slate-400 text-xs font-mono">
+              <div className="p-16 text-center text-slate-400 text-sm font-mono">
                 Calculating sales metrics...
               </div>
             ) : !overviewData ? (
-              <div className="p-16 text-center text-slate-400 text-xs">
+              <div className="p-16 text-center text-slate-400 text-sm">
                 No analytics data available for this branch.
               </div>
             ) : (
               <>
                 {/* 4 Dense KPI Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                      <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                         Today's Revenue
                       </span>
                       <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                        <IndianRupee size={13} />
+                        <IndianRupee size={18} />
                       </div>
                     </div>
                     <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
                       ₹{Number(overviewData.today.revenue).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                    <div className="text-sm text-slate-500 mt-1 leading-tight">
                       {overviewData.today.billsCount} bills today
                     </div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                      <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                         Month-to-Date
                       </span>
                       <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                        <Calendar size={13} />
+                        <Calendar size={18} />
                       </div>
                     </div>
                     <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
                       ₹{Number(overviewData.monthToDate.revenue).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                    <div className="text-sm text-slate-500 mt-1 leading-tight">
                       {overviewData.monthToDate.billsCount} bills in month
                     </div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                      <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                         Gross Margin
                       </span>
                       <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                        <Percent size={13} />
+                        <Percent size={18} />
                       </div>
                     </div>
                     <div className="text-2xl font-bold text-teal-800 font-mono tracking-tight mt-1.5 leading-none">
                       {overviewData.profitMetrics?.marginPercentage || 24}%
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                    <div className="text-sm text-slate-500 mt-1 leading-tight">
                       ₹{Number(overviewData.profitMetrics?.totalGrossProfit || 0).toLocaleString('en-IN')} margin
                     </div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">
+                      <span className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">
                         Stock Valuation (MRP)
                       </span>
                       <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600">
-                        <Package size={13} />
+                        <Package size={18} />
                       </div>
                     </div>
                     <div className="text-2xl font-bold text-slate-900 font-mono tracking-tight mt-1.5 leading-none">
                       ₹{Number(overviewData.stockHealth?.valuationMRP || 0).toLocaleString('en-IN')}
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1 leading-tight">
+                    <div className="text-sm text-slate-500 mt-1 leading-tight">
                       {overviewData.stockHealth?.totalUnits} units across batches
                     </div>
                   </div>
                 </div>
 
                 {/* Sales AreaChart & Payment Donut */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
                   {/* Left 8 Cols: Recharts Area Chart */}
-                  <div className="lg:col-span-8 bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+                  <div className="lg:col-span-8 bg-white p-5 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <h3 className="text-xs font-bold text-slate-900 font-display uppercase tracking-wider">
+                        <h3 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider">
                           Daily Sales Revenue Trend
                         </h3>
-                        <p className="text-[11px] text-slate-500">Historical branch billing curve</p>
+                        <p className="text-sm text-slate-500">Historical branch billing curve</p>
                       </div>
                     </div>
 
@@ -341,12 +341,12 @@ export const StoreReports = () => {
                   </div>
 
                   {/* Right 4 Cols: Payment Breakdown Pie Chart */}
-                  <div className="lg:col-span-4 bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+                  <div className="lg:col-span-4 bg-white p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between">
                     <div>
-                      <h3 className="text-xs font-bold text-slate-900 font-display uppercase tracking-wider mb-0.5">
+                      <h3 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider mb-0.5">
                         Payment Methods
                       </h3>
-                      <p className="text-[11px] text-slate-500 mb-2">Cash, UPI, and Card distribution</p>
+                      <p className="text-sm text-slate-500 mb-2">Cash, UPI, and Card distribution</p>
 
                       <div className="h-36 w-full flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
@@ -371,15 +371,15 @@ export const StoreReports = () => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100 text-xs">
+                    <div className="grid grid-cols-2 gap-3 mt-2 pt-2 border-t border-slate-100 text-sm">
                       {overviewData.paymentBreakup.map((p) => (
-                        <div key={p.name} className="flex items-center gap-1.5">
+                        <div key={p.name} className="flex items-center gap-2.5">
                           <span
                             className="w-2 h-2 rounded-full"
                             style={{ backgroundColor: PAYMENT_COLORS[p.name] || '#94a3b8' }}
                           ></span>
-                          <span className="font-semibold text-slate-700 text-[11px]">{p.name}:</span>
-                          <span className="font-mono text-slate-900 text-[11px] font-bold">₹{p.value}</span>
+                          <span className="font-semibold text-slate-700 text-sm">{p.name}:</span>
+                          <span className="font-mono text-slate-900 text-sm font-bold">₹{p.value}</span>
                         </div>
                       ))}
                     </div>
@@ -387,33 +387,33 @@ export const StoreReports = () => {
                 </div>
 
                 {/* Fast-Moving Medicines Grid */}
-                <div className="bg-white rounded-xl border border-slate-200 shadow-2xs p-4">
-                  <h3 className="text-xs font-bold text-slate-900 font-display uppercase tracking-wider mb-3">
+                <div className="bg-white rounded-xl border border-slate-200 shadow-2xs p-5">
+                  <h3 className="text-sm font-bold text-slate-900 font-display uppercase tracking-wider mb-3">
                     Top Dispensed Formulations (This Branch)
                   </h3>
 
                   {overviewData.fastMovingMedicines.length === 0 ? (
-                    <p className="text-xs text-slate-400 text-center py-6">No sales recorded yet.</p>
+                    <p className="text-sm text-slate-400 text-center py-6">No sales recorded yet.</p>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                       {overviewData.fastMovingMedicines.map((med, idx) => (
-                        <div key={med.id} className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+                        <div key={med.id} className="p-4 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
                           <div>
-                            <div className="flex items-center gap-2">
-                              <span className="w-5 h-5 bg-slate-900 text-white rounded text-[10px] font-bold flex items-center justify-center font-mono">
+                            <div className="flex items-center gap-3">
+                              <span className="w-5 h-5 bg-slate-900 text-white rounded text-xs font-bold flex items-center justify-center font-mono">
                                 {idx + 1}
                               </span>
-                              <span className="font-bold text-xs text-slate-900">{med.name}</span>
+                              <span className="font-bold text-sm text-slate-900">{med.name}</span>
                             </div>
-                            <div className="text-[10px] text-slate-500 mt-0.5 truncate max-w-[170px]">
+                            <div className="text-xs text-slate-500 mt-0.5 truncate max-w-[170px]">
                               {med.composition || 'Standard Formulation'}
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="font-bold text-xs text-teal-800 font-mono">
+                            <div className="font-bold text-sm text-teal-800 font-mono">
                               {med.totalQuantitySold} units
                             </div>
-                            <div className="text-[10px] text-slate-400 font-mono">
+                            <div className="text-xs text-slate-400 font-mono">
                               ₹{med.totalRevenue.toLocaleString('en-IN')}
                             </div>
                           </div>
@@ -430,63 +430,63 @@ export const StoreReports = () => {
         {/* TAB 2: GSTR-1 TAX FILING REPORT */}
         {activeTab === 'GST' && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-sm font-bold text-slate-900 font-display">
+                <h2 className="text-base font-bold text-slate-900 font-display">
                   Official GSTR-1 Tax Summary
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-sm text-slate-500 mt-0.5">
                   Standardized intra-state CGST & SGST breakdowns for monthly tax compliance
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={handleExportGstCsv}
                   disabled={!gstData}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs rounded-lg shadow-2xs transition disabled:opacity-50"
+                  className="inline-flex items-center gap-2.5 px-4.5 py-1.5.5 bg-teal-700 hover:bg-teal-800 text-white font-semibold text-sm rounded-lg shadow-2xs transition disabled:opacity-50"
                 >
-                  <Download size={13} />
+                  <Download size={18} />
                   <span>Export GSTR-1 CSV</span>
                 </button>
                 <button
                   onClick={() => window.print()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs rounded-lg shadow-2xs transition"
+                  className="inline-flex items-center gap-2.5 px-4 py-1.5.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-sm rounded-lg shadow-2xs transition"
                 >
-                  <Printer size={13} />
+                  <Printer size={18} />
                   <span>Print Sheet</span>
                 </button>
               </div>
             </div>
 
             {loading ? (
-              <div className="p-16 text-center text-slate-400 text-xs font-mono">
+              <div className="p-16 text-center text-slate-400 text-sm font-mono">
                 Aggregating GST tax slabs...
               </div>
             ) : !gstData ? (
-              <div className="p-16 text-center text-slate-400 text-xs">
+              <div className="p-16 text-center text-slate-400 text-sm">
                 No GST tax records found for this branch.
               </div>
             ) : (
               <div className="space-y-4">
                 {/* GST KPI Summary Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">Total Invoices</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
+                    <div className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">Total Invoices</div>
                     <div className="text-2xl font-bold text-slate-900 font-mono mt-1.5 leading-none">
                       {gstData.totalInvoices} Bills
                     </div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">Taxable Value</div>
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
+                    <div className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">Taxable Value</div>
                     <div className="text-2xl font-bold text-slate-900 font-mono mt-1.5 leading-none">
                       ₹{gstData.totalTaxable.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">Total GST Collected</div>
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
+                    <div className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">Total GST Collected</div>
                     <div className="text-2xl font-bold text-slate-900 font-mono mt-1.5 leading-none">
                       ₹{gstData.totalTax.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </div>
@@ -495,52 +495,52 @@ export const StoreReports = () => {
 
                 {/* GST Slab Breakdown Table */}
                 <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-                  <div className="px-4 py-2.5 border-b border-slate-200 bg-slate-50/70 flex justify-between items-center">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 font-display">
+                  <div className="px-4 py-3.5 border-b border-slate-200 bg-slate-50/70 flex justify-between items-center">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 font-display">
                       Slab-Wise Tax Breakdown (0%, 5%, 12%, 18%, 28%)
                     </h3>
-                    <span className="text-xs font-bold text-slate-700 font-mono">
+                    <span className="text-sm font-bold text-slate-700 font-mono">
                       Grand Total: ₹{gstData.grandTotal.toFixed(2)}
                     </span>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-700">
-                      <thead className="bg-slate-50 text-[11px] uppercase font-bold text-slate-600 border-b border-slate-200 font-display">
+                    <table className="w-full text-left text-sm text-slate-700">
+                      <thead className="bg-slate-50 text-sm uppercase font-bold text-slate-600 border-b border-slate-200 font-display">
                         <tr>
-                          <th className="px-4 py-2.5">GST Tax Slab</th>
-                          <th className="px-4 py-2.5 text-center">Items Sold</th>
-                          <th className="px-4 py-2.5 text-right">Taxable Value (₹)</th>
-                          <th className="px-4 py-2.5 text-right">CGST (₹)</th>
-                          <th className="px-4 py-2.5 text-right">SGST (₹)</th>
-                          <th className="px-4 py-2.5 text-right">Total Tax (₹)</th>
-                          <th className="px-4 py-2.5 text-right">Total Value (₹)</th>
+                          <th className="px-4 py-3.5">GST Tax Slab</th>
+                          <th className="px-4 py-3.5 text-center">Items Sold</th>
+                          <th className="px-4 py-3.5 text-right">Taxable Value (₹)</th>
+                          <th className="px-4 py-3.5 text-right">CGST (₹)</th>
+                          <th className="px-4 py-3.5 text-right">SGST (₹)</th>
+                          <th className="px-4 py-3.5 text-right">Total Tax (₹)</th>
+                          <th className="px-4 py-3.5 text-right">Total Value (₹)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 font-mono text-sm">
+                      <tbody className="divide-y divide-slate-100 font-mono text-base">
                         {gstData.slabs.map((slab) => (
                           <tr key={slab.rate} className="hover:bg-slate-50 transition">
-                            <td className="px-4 py-2.5 font-semibold text-slate-900 font-sans text-xs">
-                              <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded text-xs">
+                            <td className="px-4 py-3.5 font-semibold text-slate-900 font-sans text-sm">
+                              <span className="px-3 py-1 bg-slate-100 border border-slate-200 rounded text-sm">
                                 {slab.rateLabel}
                               </span>
                             </td>
-                            <td className="px-4 py-2.5 text-center font-bold text-slate-800 text-xs">
+                            <td className="px-4 py-3.5 text-center font-bold text-slate-800 text-sm">
                               {slab.itemCount}
                             </td>
-                            <td className="px-4 py-2.5 text-right font-semibold text-slate-900 text-xs">
+                            <td className="px-4 py-3.5 text-right font-semibold text-slate-900 text-sm">
                               ₹{slab.taxableValue.toFixed(2)}
                             </td>
-                            <td className="px-4 py-2.5 text-right text-slate-600 text-xs">
+                            <td className="px-4 py-3.5 text-right text-slate-600 text-sm">
                               ₹{slab.cgst.toFixed(2)}
                             </td>
-                            <td className="px-4 py-2.5 text-right text-slate-600 text-xs">
+                            <td className="px-4 py-3.5 text-right text-slate-600 text-sm">
                               ₹{slab.sgst.toFixed(2)}
                             </td>
-                            <td className="px-4 py-2.5 text-right font-bold text-slate-900 text-xs">
+                            <td className="px-4 py-3.5 text-right font-bold text-slate-900 text-sm">
                               ₹{slab.totalTax.toFixed(2)}
                             </td>
-                            <td className="px-4 py-2.5 text-right font-bold text-slate-900 text-sm">
+                            <td className="px-4 py-3.5 text-right font-bold text-slate-900 text-base">
                               ₹{slab.totalValue.toFixed(2)}
                             </td>
                           </tr>
@@ -557,59 +557,59 @@ export const StoreReports = () => {
         {/* TAB 3: STOCK MOVEMENT & DEAD STOCK */}
         {activeTab === 'STOCK_MOVEMENT' && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-sm font-bold text-slate-900 font-display">
+                <h2 className="text-base font-bold text-slate-900 font-display">
                   Stock Velocity & Dead Stock Identification
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-sm text-slate-500 mt-0.5">
                   Analyze high-rotation inventory vs stagnant stock to optimize counter working capital
                 </p>
               </div>
 
               <button
                 onClick={fetchStockMovement}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs"
+                className="inline-flex items-center gap-2.5 px-4 py-1.5.5 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 shadow-2xs"
               >
-                <RotateCw size={12} className={loading ? 'animate-spin' : ''} />
+                <RotateCw size={16} className={loading ? 'animate-spin' : ''} />
                 <span>Refresh Status</span>
               </button>
             </div>
 
             {loading ? (
-              <div className="p-16 text-center text-slate-400 text-xs font-mono">
+              <div className="p-16 text-center text-slate-400 text-sm font-mono">
                 Analyzing inventory rotation rates...
               </div>
             ) : !stockMoveData ? (
-              <div className="p-16 text-center text-slate-400 text-xs">
+              <div className="p-16 text-center text-slate-400 text-sm">
                 No inventory velocity data available.
               </div>
             ) : (
               <div className="space-y-4">
                 {/* Summary Badges */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">Fast Moving</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
+                    <div className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">Fast Moving</div>
                     <div className="text-2xl font-bold text-teal-800 font-mono mt-1.5 leading-none">
                       {stockMoveData.summary?.fastMovingCount || 0} Batches
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1 leading-tight">&gt;10 units in 30d</div>
+                    <div className="text-sm text-slate-500 mt-1 leading-tight">&gt;10 units in 30d</div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">Slow Moving</div>
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
+                    <div className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">Slow Moving</div>
                     <div className="text-2xl font-bold text-slate-900 font-mono mt-1.5 leading-none">
                       {stockMoveData.summary?.slowMovingCount || 0} Batches
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-1 leading-tight">1-9 units in 30d</div>
+                    <div className="text-sm text-slate-500 mt-1 leading-tight">1-9 units in 30d</div>
                   </div>
 
-                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-display">Dead / Stagnant Stock</div>
+                  <div className="bg-white border border-slate-200 rounded-xl px-4 py-4 shadow-2xs">
+                    <div className="text-sm font-bold uppercase tracking-wider text-slate-500 font-display">Dead / Stagnant Stock</div>
                     <div className="text-2xl font-bold text-red-700 font-mono mt-1.5 leading-none">
                       {stockMoveData.summary?.deadStockCount || 0} Batches
                     </div>
-                    <div className="text-[11px] text-red-700 font-semibold mt-1 leading-tight">
+                    <div className="text-sm text-red-700 font-semibold mt-1 leading-tight">
                       ₹{Number(stockMoveData.summary?.deadStockValuation || 0).toLocaleString('en-IN')} locked
                     </div>
                   </div>
@@ -617,52 +617,52 @@ export const StoreReports = () => {
 
                 {/* Dead Stock Watchlist Table */}
                 <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-                  <div className="px-4 py-2.5 border-b border-slate-200 bg-slate-50/70 flex justify-between items-center">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 font-display">
+                  <div className="px-4 py-3.5 border-b border-slate-200 bg-slate-50/70 flex justify-between items-center">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 font-display">
                       Dead Stock Warning List (0 Sales in Last 30 Days)
                     </h3>
-                    <span className="text-[10px] font-semibold text-red-700 bg-red-50 border border-red-200 px-2 py-0.2 rounded">
+                    <span className="text-xs font-semibold text-red-700 bg-red-50 border border-red-200 px-3 py-0.2 rounded">
                       Action: Return or Discount
                     </span>
                   </div>
 
                   {stockMoveData.deadStock.length === 0 ? (
-                    <p className="p-8 text-center text-xs text-slate-500">No dead stock detected in this branch.</p>
+                    <p className="p-8 text-center text-sm text-slate-500">No dead stock detected in this branch.</p>
                   ) : (
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs text-slate-700">
-                        <thead className="bg-slate-50 text-[11px] uppercase font-bold text-slate-600 border-b border-slate-200 font-display">
+                      <table className="w-full text-left text-sm text-slate-700">
+                        <thead className="bg-slate-50 text-sm uppercase font-bold text-slate-600 border-b border-slate-200 font-display">
                           <tr>
-                            <th className="px-4 py-2.5">Medicine Name</th>
-                            <th className="px-4 py-2.5 text-center">Batch No</th>
-                            <th className="px-4 py-2.5 text-center">Expiry Date</th>
-                            <th className="px-4 py-2.5 text-right">Stuck Qty</th>
-                            <th className="px-4 py-2.5 text-right">MRP (₹)</th>
-                            <th className="px-4 py-2.5 text-right">Locked Capital (₹)</th>
+                            <th className="px-4 py-3.5">Medicine Name</th>
+                            <th className="px-4 py-3.5 text-center">Batch No</th>
+                            <th className="px-4 py-3.5 text-center">Expiry Date</th>
+                            <th className="px-4 py-3.5 text-right">Stuck Qty</th>
+                            <th className="px-4 py-3.5 text-right">MRP (₹)</th>
+                            <th className="px-4 py-3.5 text-right">Locked Capital (₹)</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100 text-sm">
+                        <tbody className="divide-y divide-slate-100 text-base">
                           {stockMoveData.deadStock.map((b) => (
                             <tr key={b.id} className="hover:bg-slate-50 transition">
-                              <td className="px-4 py-2.5 font-semibold text-slate-900 text-xs">{b.medicineName}</td>
-                              <td className="px-4 py-2.5 text-center font-mono text-slate-800 text-xs">
-                                <span className="bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                              <td className="px-4 py-3.5 font-semibold text-slate-900 text-sm">{b.medicineName}</td>
+                              <td className="px-4 py-3.5 text-center font-mono text-slate-800 text-sm">
+                                <span className="bg-slate-100 px-3 py-1 rounded border border-slate-200">
                                   {b.batchNumber}
                                 </span>
                               </td>
-                              <td className="px-4 py-2.5 text-center font-mono text-slate-600 text-xs whitespace-nowrap">
+                              <td className="px-4 py-3.5 text-center font-mono text-slate-600 text-sm whitespace-nowrap">
                                 {new Date(b.expiryDate).toLocaleDateString('en-IN', {
                                   month: 'short',
                                   year: 'numeric',
                                 })}
                               </td>
-                              <td className="px-4 py-2.5 text-right font-bold text-slate-900 font-mono text-xs">
+                              <td className="px-4 py-3.5 text-right font-bold text-slate-900 font-mono text-sm">
                                 {b.quantity}
                               </td>
-                              <td className="px-4 py-2.5 text-right font-mono text-slate-500 text-xs">
+                              <td className="px-4 py-3.5 text-right font-mono text-slate-500 text-sm">
                                 ₹{b.mrp.toFixed(2)}
                               </td>
-                              <td className="px-4 py-2.5 text-right font-bold text-red-700 font-mono text-sm">
+                              <td className="px-4 py-3.5 text-right font-bold text-red-700 font-mono text-base">
                                 ₹{b.valuation.toLocaleString('en-IN')}
                               </td>
                             </tr>
